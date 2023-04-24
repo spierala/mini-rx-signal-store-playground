@@ -25,6 +25,10 @@ MiniRx is driven by [RxJS](https://rxjs.dev/), which is great for handling async
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
+You should see something like this in the browser:
+
+![mini-rx-signal-store](https://user-images.githubusercontent.com/1272446/234119525-0d6b5265-4f18-46e2-86a0-92b0e815de90.gif)
+
 ## Example
 
 The example code is taken from the app.component.ts in this repo.
