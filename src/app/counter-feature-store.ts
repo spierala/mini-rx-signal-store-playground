@@ -1,6 +1,5 @@
 import {Action, FeatureStore} from '@mini-rx/signal-store';
 import {computed, Injectable} from "@angular/core";
-import {count} from "rxjs";
 
 // State interface
 interface CounterState {
