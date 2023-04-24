@@ -1,4 +1,4 @@
-# MiniRx Signal Store
+# MiniRx Signal Store (Playground / RFC)
 
 This is the playground for the Angular Signals version of [MiniRx Store](https://github.com/spierala/mini-rx-store).
 
