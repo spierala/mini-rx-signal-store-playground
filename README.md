@@ -22,7 +22,7 @@ The main differences of the Signal Store are:
 ### Angular Signals
 State is stored and exposed as **Angular Signal**, the new reactive primitive of Angular.
 
-Signals have some advantages in Angular, compared to RxJS:
+Signals in Angular have some advantages, compared to RxJS:
 - write subscription free code, even without using the async pipe
 - easier to learn (no pipe, no operators, Signals are always synchronous)
 - easier to compose derived state from other Signals with `computed` instead of RxJS `combineLatest`
