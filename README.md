@@ -11,7 +11,7 @@ MiniRx is a highly flexible **state management** solution and scales with your n
 
 ### MiniRx Signal Store
 
-MiniRx Signal Store will be a dedicated library for Angular.
+MiniRx Signal Store will probably be a dedicated library for Angular...
 It has a lot in common with the original MiniRx library, but the differences are big enough to justify a dedicated library. 
 
 The main differences of the Signal Store are: 
@@ -19,8 +19,9 @@ The main differences of the Signal Store are:
 - no `select` method / no selectors (with Signals you can "select" state with `computed`)
 - state is only available as Signal (internal usages of BehaviorSubject have been removed completely)
 
-### Angular Signals
-State is stored and exposed as **Angular Signal**, the new reactive primitive of Angular.
+### Based on Angular Signals
+The MiniRx Signal Store uses **Angular Signal**, the new reactive primitive of Angular.
+RxJS BehaviorSubject has been refactored to Signals internally. State is exposed as Signal. 
 
 Signals in Angular have some advantages, compared to RxJS:
 - write subscription free code, even without using the async pipe
@@ -29,14 +30,14 @@ Signals in Angular have some advantages, compared to RxJS:
 - potentially more performant Change Detection in the future
 
 ### Driven by RxJS
-MiniRx is driven by [RxJS](https://rxjs.dev/), which is great for handling async tasks like API calls. 
+MiniRx Signal Store is driven by [RxJS](https://rxjs.dev/), which is great for handling async tasks like API calls (e.g. in the MiniRx effects API).
 
 ### MiniRx Signal Store is still MiniRx
 MiniRx Signal Store will be a fork of MiniRx Store and has mostly all the features of the original MiniRx (see the Docs to get an impression: https://mini-rx.io/).
 
 Most likely Signal Store and MiniRx Store will depend on a shared library which will provide common code.
 
-MiniRx Store will still be maintained and stays a perfect state management library if you want to go all-in with RxJS. 
+MiniRx Store will still be maintained and stays a perfect state management library if you want to go all-in with RxJS (and it is framework agnostic!). 
 
 ## Development server
 
