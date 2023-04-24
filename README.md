@@ -14,7 +14,7 @@ MiniRx is a highly flexible **state management** solution and scales with your n
 MiniRx Signal Store will be a dedicated library for Angular.
 It has a lot in common with the original MiniRx library, but the differences are big enough to justify a dedicated library. 
 
-The main differences are: 
+The main differences of the Signal Store are: 
 - no lazy state initialisation (Signals encourage to have a meaningful initial state)
 - no `select` method / no selectors (with Signals you can "select" state with `computed`)
 - state is only available as Signal (internal usages of BehaviorSubject have been removed completely)
@@ -30,6 +30,13 @@ Signals have some advantages in Angular, compared to RxJS:
 
 ### Driven by RxJS
 MiniRx is driven by [RxJS](https://rxjs.dev/), which is great for handling async tasks like API calls. 
+
+### MiniRx Signal Store is still MiniRx
+MiniRx Signal Store will be a fork of MiniRx Store and has mostly all the features of the original MiniRx (see the Docs to get an impression: https://mini-rx.io/).
+
+Most likely Signal Store and MiniRx Store will depend on a shared library which will provide common code.
+
+MiniRx Store will still be maintained and stays a perfect state management library if you want to go all-in with RxJS. 
 
 ## Development server
 
