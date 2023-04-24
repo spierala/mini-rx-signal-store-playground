@@ -24,8 +24,8 @@ State is stored and exposed as **Angular Signal**, the new reactive primitive of
 
 Signals have some advantages in Angular, compared to RxJS:
 - write subscription free code, even without using the async pipe
-- easier to learn (no pipe, no operators, always synchronous)
-- easier to compose derived state from other Signals with `computed`
+- easier to learn (no pipe, no operators, Signals are always synchronous)
+- easier to compose derived state from other Signals with `computed` instead of RxJS `combineLatest`
 - potentially more performant Change Detection in the future
 
 ### Driven by RxJS
