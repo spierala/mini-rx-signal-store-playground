@@ -18,6 +18,7 @@ The main differences of the Signal Store are:
 - no lazy state initialisation (Signals encourage to have a meaningful initial state)
 - no `select` method / no selectors (with Signals you can "select" state with `computed`)
 - state is only available as Signal (internal usages of BehaviorSubject have been removed completely)
+- `update` instead of `setState`
 
 ### Based on Angular Signals
 The MiniRx Signal Store uses **Angular Signal**, the new reactive primitive of Angular.
