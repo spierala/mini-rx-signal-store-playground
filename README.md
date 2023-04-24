@@ -112,6 +112,9 @@ export class AppComponent {
 ```
 
 ### Feature Store
+
+Feature Store offers a simplified API to update and read state. It uses Redux under the hood.
+
 ```ts
 import {Action, FeatureStore} from '@mini-rx/signal-store';
 import {computed, Injectable} from "@angular/core";
