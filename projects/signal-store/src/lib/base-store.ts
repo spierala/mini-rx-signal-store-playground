@@ -1,44 +1,21 @@
 import { isObservable, Observable, Subject, Subscription } from 'rxjs';
-import { miniRxError } from './utils';
 import { Action, SetStateParam, SetStateReturn, StateOrCallback } from './models';
 import { defaultEffectsErrorHandler } from './default-effects-error-handler';
-import { State } from './state';
+import {Injectable} from "@angular/core";
 
 // BaseStore is extended by ComponentStore/FeatureStore
+@Injectable()
 export abstract class BaseStore<StateType extends object> {
     /**
      * @internal Used by ComponentStore/FeatureStore
      */
     protected _sub: Subscription = new Subscription();
-    /**
-     * @internal Used by ComponentStore/FeatureStore
-     */
-    protected _state = new State<StateType>();
-    /** @deprecated Use the `select` method without arguments */
-    state$: Observable<StateType> = this._state.select();
-    get state(): StateType {
-        this.assertStateIsInitialized();
-        return this._state.get()!;
-    }
-    private isStateInitialized = false;
-    private notInitializedErrorMessage =
-        `${this.constructor.name} has no initialState yet. ` +
-        `Please provide an initialState before updating/getting state.`;
-    private initializedErrorMessage = `${this.constructor.name} has initialState already.`;
 
-    // Called by ComponentStore/FeatureStore
-    setInitialState(initialState: StateType): void {
-        this.assertStateIsNotInitialized();
-        this.isStateInitialized = true;
-        // Update state happens in ComponentStore/FeatureStore
-    }
-
-    setState<P extends SetStateParam<StateType>>(
+    update<P extends SetStateParam<StateType>>(
         stateOrCallback: P,
         name?: string
     ): SetStateReturn<StateType, P> {
         const dispatchFn = (stateOrCallback: StateOrCallback<StateType>, name?: string): Action => {
-            this.assertStateIsInitialized();
             return this._dispatchSetStateAction(stateOrCallback, name);
         };
 
@@ -84,20 +61,6 @@ export abstract class BaseStore<StateType extends object> {
                 : subject.next(observableOrValue as ObservableType);
         }) as unknown as ReturnType;
     }
-
-    private assertStateIsInitialized(): void {
-        if (!this.isStateInitialized) {
-            miniRxError(this.notInitializedErrorMessage);
-        }
-    }
-
-    private assertStateIsNotInitialized(): void {
-        if (this.isStateInitialized) {
-            miniRxError(this.initializedErrorMessage);
-        }
-    }
-
-    select = this._state.select.bind(this._state);
 
     destroy() {
         this._sub.unsubscribe();

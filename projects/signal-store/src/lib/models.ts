@@ -1,4 +1,5 @@
 import { Observable } from 'rxjs';
+import {Signal} from "@angular/core";
 
 export const enum ExtensionSortOrder {
     DEFAULT = 0,
@@ -101,10 +102,8 @@ export type SetStateReturn<T, P extends SetStateParam<T>> = P extends Observable
     : Action;
 
 export interface ComponentStoreLike<StateType> {
-    setInitialState(initialState: StateType): void;
-    setState(stateOrCallback: SetStateParam<StateType>, name?: string): void;
-    get state(): StateType;
-    select(mapFn?: any): Observable<any>;
+    update(stateOrCallback: SetStateParam<StateType>, name?: string): void;
+    state: Signal<StateType>;
     effect(effectFn: (origin$: Observable<any>) => Observable<any>): () => void;
     undo(action: Action): void;
     destroy(): void;

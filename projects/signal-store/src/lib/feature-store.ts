@@ -10,6 +10,7 @@ import {
 } from './actions';
 import { BaseStore } from './base-store';
 import { addFeature, appState, dispatch, hasUndoExtension, removeFeature } from './store-core';
+import {computed, Signal} from "@angular/core";
 
 export class FeatureStore<StateType extends object>
     extends BaseStore<StateType>
@@ -20,11 +21,15 @@ export class FeatureStore<StateType extends object>
         return this._featureKey;
     }
 
+    state: Signal<StateType> = computed(() => {
+      return appState()[this.featureKey];
+    });
+
     private readonly featureId: string;
 
     constructor(
         featureKey: string,
-        initialState: StateType | undefined,
+        initialState: StateType,
         config: FeatureStoreConfig = {}
     ) {
         super();
@@ -32,21 +37,9 @@ export class FeatureStore<StateType extends object>
         this.featureId = generateId();
         this._featureKey = config.multi ? featureKey + '-' + generateId() : featureKey;
 
-        if (initialState) {
-            this.setInitialState(initialState);
-        }
-    }
-
-    override setInitialState(initialState: StateType): void {
-        super.setInitialState(initialState);
-
         addFeature<StateType>(
-            this._featureKey,
-            createFeatureStoreReducer(this.featureId, initialState)
-        );
-
-        this._sub.add(
-            appState.select((state) => state[this.featureKey]).subscribe((v) => this._state.set(v))
+          this._featureKey,
+          createFeatureStoreReducer(this.featureId, initialState)
         );
     }
 
@@ -111,7 +104,7 @@ function generateId() {
 
 export function createFeatureStore<T extends object>(
     featureKey: string,
-    initialState: T | undefined,
+    initialState: T,
     config: FeatureStoreConfig = {}
 ): FeatureStore<T> {
     return new FeatureStore<T>(featureKey, initialState, config);

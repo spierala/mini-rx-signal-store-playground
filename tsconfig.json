@@ -17,8 +17,8 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "paths": {
-      "signal-store": [
-        "dist/signal-store"
+      "@mini-rx/signal-store": [
+        "projects/signal-store/src/public-api.ts"
       ]
     },
     "target": "ES2022",

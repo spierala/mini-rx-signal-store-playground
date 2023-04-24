@@ -1,49 +1,55 @@
 import { Observable } from 'rxjs';
 import {
-    Action,
-    Actions,
-    AppState,
-    CombineReducersFn,
-    EFFECT_METADATA_KEY,
-    EffectConfig,
-    ExtensionId,
-    HasEffectMetadata,
-    MetaReducer,
-    Reducer,
-    ReducerDictionary,
-    StoreConfig,
-    StoreExtension,
+  Action,
+  Actions,
+  AppState,
+  EFFECT_METADATA_KEY,
+  EffectConfig,
+  ExtensionId,
+  HasEffectMetadata,
+  MetaReducer,
+  Reducer,
+  ReducerDictionary,
+  StoreConfig,
+  StoreExtension,
 } from './models';
-import { combineMetaReducers, hasEffectMetaData, miniRxError, sortExtensions } from './utils';
+import {
+  combineMetaReducers,
+  hasEffectMetaData,
+  miniRxError,
+  sortExtensions,
+} from './utils';
 import { defaultEffectsErrorHandler } from './default-effects-error-handler';
-import { combineReducers as defaultCombineReducers } from './combine-reducers';
+import { combineReducers } from './combine-reducers';
 import { createMiniRxAction, MiniRxActionType } from './actions';
-import { State } from './state';
 import { ActionsOnQueue } from './actions-on-queue';
+import { computed, signal, WritableSignal } from '@angular/core';
 
 export let hasUndoExtension = false;
 let isStoreInitialized = false;
 
 // REDUCER STATE
-// exported for testing purposes
-export const reducerState = new State<{
+const reducerState: WritableSignal<
+  {
     featureReducers: ReducerDictionary<AppState>;
     metaReducers: MetaReducer<AppState>[];
-    combineReducersFn: CombineReducersFn<AppState>;
-}>();
-
-const reducer$: Observable<Reducer<AppState>> = reducerState.select((v) => {
-    const combinedMetaReducer: MetaReducer<AppState> = combineMetaReducers(v.metaReducers);
-    const combinedReducer: Reducer<AppState> = v.combineReducersFn(v.featureReducers);
-    return combinedMetaReducer(combinedReducer);
+  }> = signal({
+  featureReducers: {},
+  metaReducers: []
 });
 
+const reducer = computed(() => {
+    const combinedMetaReducer: MetaReducer<AppState> = combineMetaReducers(reducerState().metaReducers);
+    const combinedReducer: Reducer<AppState> = combineReducers(reducerState().featureReducers);
+    return combinedMetaReducer(combinedReducer);
+})
+
 function hasFeatureReducers(): boolean {
-    return !!Object.keys(reducerState.get()!.featureReducers).length;
+    return !!Object.keys(reducerState().featureReducers).length;
 }
 
 function checkFeatureExists(featureKey: string) {
-    if (reducerState.get()!.featureReducers.hasOwnProperty(featureKey)) {
+    if (reducerState().featureReducers.hasOwnProperty(featureKey)) {
         miniRxError(`Feature "${featureKey}" already exists.`);
     }
 }
@@ -53,26 +59,25 @@ function addReducer(featureKey: string, reducer: Reducer<any>) {
 
     checkFeatureExists(featureKey);
 
-    reducerState.patch((state) => ({
+    reducerState.update((state) => ({
+        ...state,
         featureReducers: { ...state.featureReducers, [featureKey]: reducer },
     }));
 }
 
 function removeReducer(featureKey: string) {
-    reducerState.patch((state) => ({
+    reducerState.update((state) => ({
+        ...state,
         featureReducers: omit(state.featureReducers, featureKey) as ReducerDictionary<AppState>,
     }));
 }
 
 // exported for testing purposes
 export function addMetaReducers(...reducers: MetaReducer<AppState>[]) {
-    reducerState.patch((state) => ({
+    reducerState.update((state) => ({
+        ...state,
         metaReducers: [...state.metaReducers, ...reducers],
     }));
-}
-
-function updateCombineReducersFn(combineReducersFn: CombineReducersFn<AppState>) {
-    reducerState.patch({ combineReducersFn });
 }
 
 // ACTIONS
@@ -80,7 +85,7 @@ const actionsOnQueue = new ActionsOnQueue();
 export const actions$: Actions = actionsOnQueue.actions$;
 
 // APP STATE
-export const appState = new State<AppState>();
+export const appState = signal<AppState>({});
 
 // Wire up the Redux Store: Init reducer state, subscribe to the actions and reducer Observable
 // Called by `configureStore` and `addReducer`
@@ -92,17 +97,12 @@ function initStore() {
     reducerState.set({
         featureReducers: {},
         metaReducers: [],
-        combineReducersFn: defaultCombineReducers,
     });
-
-    let reducer: Reducer<AppState>;
-    // 👇 We could use `withLatestFrom` inside actionsOnQueue.actions$.pipe, but fewer operators = less bundle-size :)
-    reducer$.subscribe((v) => (reducer = v));
 
     // Listen to the Actions stream and update state accordingly
     actionsOnQueue.actions$.subscribe((action) => {
-        const newState: AppState = reducer(
-            appState.get()!, // Initially undefined, but the reducer can handle undefined (by falling back to initial state)
+        const newState: AppState = reducer()(
+            appState(),
             action
         );
         appState.set(newState);
@@ -118,10 +118,6 @@ export function configureStore(config: StoreConfig<AppState> = {}) {
         miniRxError(
             '`configureStore` detected reducers. Did you instantiate FeatureStores before calling `configureStore`?'
         );
-    }
-
-    if (config.combineReducersFn) {
-        updateCombineReducersFn(config.combineReducersFn);
     }
 
     if (config.metaReducers?.length) {

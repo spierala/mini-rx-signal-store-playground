@@ -20,6 +20,7 @@ import {
     undo,
 } from './actions';
 import { ActionsOnQueue } from './actions-on-queue';
+import {computed, signal} from "@angular/core";
 
 let componentStoreConfig: ComponentStoreConfig | undefined = undefined;
 
@@ -45,12 +46,14 @@ export class ComponentStore<StateType extends object>
     implements ComponentStoreLike<StateType>
 {
     private actionsOnQueue = new ActionsOnQueue();
+    #state = signal(this.initialState);
+    state = computed(() => this.#state());
     private readonly combinedMetaReducer: MetaReducer<StateType>;
-    private reducer: Reducer<StateType> | undefined;
+    private readonly reducer: Reducer<StateType>;
     private hasUndoExtension = false;
     private extensions: ComponentStoreExtension[] = []; // This is a class property just for testing purposes
 
-    constructor(initialState?: StateType, config?: ComponentStoreConfig) {
+    constructor(private initialState: StateType, config?: ComponentStoreConfig) {
         super();
 
         const metaReducers: MetaReducer<StateType>[] = [];
@@ -84,27 +87,22 @@ export class ComponentStore<StateType extends object>
 
         this.combinedMetaReducer = combineMetaReducers(metaReducers);
 
+        this.reducer = this.combinedMetaReducer(createComponentStoreReducer(initialState));
+        this.dispatch(createMiniRxAction(MiniRxActionType.INIT, csFeatureKey));
+
         this._sub.add(
             this.actionsOnQueue.actions$.subscribe((action) => {
-                const newState: StateType = this.reducer!(
-                    // We are sure, there is a reducer!
-                    this._state.get()!, // Initially undefined, but the reducer can handle undefined (by falling back to initial state)
+                const newState: StateType = this.reducer(
+                    this.#state(),
                     action
                 );
-                this._state.set(newState);
+                this.#state.set(newState);
             })
         );
 
-        if (initialState) {
-            this.setInitialState(initialState);
-        }
-    }
-
-    override setInitialState(initialState: StateType): void {
-        super.setInitialState(initialState);
-
-        this.reducer = this.combinedMetaReducer(createComponentStoreReducer(initialState));
-        this.dispatch(createMiniRxAction(MiniRxActionType.INIT, csFeatureKey));
+        // if (initialState) {
+        //     this.setInitialState(initialState);
+        // }
     }
 
     /** @internal
@@ -131,11 +129,9 @@ export class ComponentStore<StateType extends object>
     }
 
     override destroy() {
-        if (this.reducer) {
-            // Dispatch an action really just for logging via LoggerExtension
-            // Only dispatch if a reducer exists (if an initial state was provided or setInitialState was called)
-            this.dispatch(createMiniRxAction(MiniRxActionType.DESTROY, csFeatureKey));
-        }
+        // Dispatch an action really just for logging via LoggerExtension
+        // Only dispatch if a reducer exists (if an initial state was provided or setInitialState was called)
+        this.dispatch(createMiniRxAction(MiniRxActionType.DESTROY, csFeatureKey));
         super.destroy();
     }
 }
@@ -193,7 +189,7 @@ function mergeExtensions(
 }
 
 export function createComponentStore<T extends object>(
-    initialState?: T | undefined,
+    initialState: T,
     config?: ComponentStoreConfig
 ): ComponentStore<T> {
     return new ComponentStore<T>(initialState, config);

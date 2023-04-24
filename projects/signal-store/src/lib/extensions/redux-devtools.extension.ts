@@ -50,8 +50,8 @@ export class ReduxDevtoolsExtension extends StoreExtension {
 
             actions$
                 .pipe(
-                    withLatestFrom(appState.select()),
-                    tap(([action, state]) => {
+                    tap((action) => {
+                        const state = appState();
                         const actionForDevTools: Action = beautifyActionForLogging(action, state);
                         this.devtoolsConnection.send(actionForDevTools, state);
                     })
