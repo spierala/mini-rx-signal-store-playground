@@ -1,26 +1,28 @@
-import { Observable, OperatorFunction, pipe } from 'rxjs';
-import { distinctUntilChanged, filter, map } from 'rxjs/operators';
+import { Observable, OperatorFunction } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import {
-    Action,
-    EFFECT_METADATA_KEY,
-    HasEffectMetadata,
-    MetaReducer,
-    Reducer,
-    StateOrCallback,
-    StoreExtension,
+  Action,
+  EFFECT_METADATA_KEY,
+  HasEffectMetadata,
+  MetaReducer,
+  Reducer,
+  StateOrCallback,
+  StoreExtension,
 } from './models';
-import { isComponentStoreSetStateAction, isFeatureStoreSetStateAction } from './actions';
+import {
+  isComponentStoreSetStateAction,
+  isFeatureStoreSetStateAction,
+} from './actions';
 import { miniRxNameSpace } from './constants';
 
-export function ofType(...allowedTypes: string[]): OperatorFunction<Action, Action> {
-    return filter((action: Action) =>
-        allowedTypes.some((type) => {
-            return type === action.type;
-        })
-    );
-}
-export function select<T, R>(mapFn: (state: T) => R) {
-    return pipe(map(mapFn), distinctUntilChanged());
+export function ofType(
+  ...allowedTypes: string[]
+): OperatorFunction<Action, Action> {
+  return filter((action: Action) =>
+    allowedTypes.some((type) => {
+      return type === action.type;
+    })
+  );
 }
 
 export function miniRxError(message: string): never {

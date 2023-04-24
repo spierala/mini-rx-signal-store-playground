@@ -161,7 +161,7 @@ export class CounterFeatureStore extends FeatureStore<CounterState> {
     super('countFs', counterInitialState);
   }
 
-  // Update state with `setState`
+  // Update state with `update`
   inc() {
     this.lastAction = this.update(state => ({ count: state.count + 1 }));
   }
@@ -172,12 +172,13 @@ export class CounterFeatureStore extends FeatureStore<CounterState> {
 
   undoLast() {
     if (this.lastAction) {
+      // Undo an action
       this.undo(this.lastAction)
     }
   }
 
   mutate() {
-    // Mutating state should throw an error! 
+    // Try a mutation, but this will throw an error with the Immutable Extension
     this.state().count = 123;
   }
 }
