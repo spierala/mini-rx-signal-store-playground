@@ -9,6 +9,16 @@ MiniRx is a highly flexible **state management** solution and scales with your n
 * Manage **global state** with a minimum of boilerplate using **Feature Stores**
 * Manage **local component state** with **Component Stores**
 
+### MiniRx Signal Store
+
+MiniRx Signal Store will be a dedicated library for Angular.
+It has a lot in common with the original MiniRx library, but the differences are big enough to justify a dedicated library. 
+
+The main differences are: 
+- no lazy state initialisation (Signals encourage to have a meaningful initial state)
+- no `select` method / no selectors (with Signals you can "select" state with `computed`)
+- state is only available as Signal (internal usages of BehaviorSubject have been removed completely)
+
 ### Angular Signals
 State is stored and exposed as **Angular Signal**, the new reactive primitive of Angular.
 
