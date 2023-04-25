@@ -57,9 +57,9 @@ The Usage of RxJS in the Signal Store is limited:
 ### MiniRx Signal Store is still MiniRx
 MiniRx Signal Store is based on a straight copy of MiniRx Store and has mostly all the features of the original MiniRx (see the Docs to get an impression: https://mini-rx.io/).
 
-Most likely Signal Store and MiniRx Store will depend on a shared library which will provide common code. All libraries will reside in the same Nx mono-repo.
+Probably, Signal Store and MiniRx Store will depend on a shared library which will provide common code. All libraries will reside in the same Nx [mono-repo](https://github.com/spierala/mini-rx-store).
 
-MiniRx Store will still be maintained and stays a perfect state management library if you want to go all-in with RxJS (and it is framework agnostic!). 
+The original MiniRx Store will still be maintained and stays a perfect state management library if you want to go all-in with RxJS (...and it is framework agnostic!). 
 
 ## Development server
 
