@@ -1,6 +1,10 @@
-# MiniRx Signal Store (Playground / RFC)
+# MiniRx Signal Store (Playground)
 
 This is the playground for the Angular Signals version of [MiniRx Store](https://github.com/spierala/mini-rx-store).
+
+An official RFC in the [MiniRx repo](https://github.com/spierala/mini-rx-store) will follow soon.
+
+This playground is used to form the initial ideas for the RFC.
 
 ### MiniRx in short
 MiniRx is a highly flexible **state management** solution and scales with your needs:
@@ -11,14 +15,22 @@ MiniRx is a highly flexible **state management** solution and scales with your n
 
 ### MiniRx Signal Store
 
-MiniRx Signal Store will probably be a dedicated library for Angular...
-It has a lot in common with the original MiniRx library, but the differences are big enough to justify a dedicated library. 
+#### Goal
+Take the great concept of MiniRx Store and create a state management library which embraces Angular Signals.
 
-The main differences of the Signal Store are: 
+#### Dedicated library
+MiniRx Signal Store will probably be a dedicated library for Angular...
+It has a lot in common with the original MiniRx library, but the differences are big enough to justify a dedicated library.
+
+The focus on Signals allows (again) to create one of the most lightweight state management libraries for Angular.
+
+Proposed package name: @mini-rx/signal-store
+
+#### The main differences of the Signal Store are: 
 - no lazy state initialisation (Signals encourage to have a meaningful initial state)
-- no `select` method / no selectors (with Signals you can "select" state with `computed`)
-- state is only available as Signal (internal usages of BehaviorSubject have been removed completely)
-- `update` instead of `setState`
+- ~~no `select` method / no selectors (with Signals you can "select" state with `computed`)~~ maybe there should be a select method and memoized selectors!? That would make refactors from the original MiniRx to Signal Store much more straightforward
+- state is only available as Signal
+- `update` instead of `setState` (inspired by the Angular Signals API)
 
 ### Based on Angular Signals
 The MiniRx Signal Store uses **Angular Signal**, the new reactive primitive of Angular.
@@ -33,10 +45,15 @@ Signals in Angular have some advantages, compared to RxJS:
 ### Driven by RxJS
 MiniRx Signal Store is driven by [RxJS](https://rxjs.dev/), which is great for handling async tasks like API calls (e.g. in the MiniRx effects API).
 
-### MiniRx Signal Store is still MiniRx
-MiniRx Signal Store will be a fork of MiniRx Store and has mostly all the features of the original MiniRx (see the Docs to get an impression: https://mini-rx.io/).
+The Usage of RxJS in the Signal Store is limited:
+- The actions stream of the Redux Store is a RxJS Subject
+- The effects APIs of the Signal Store use the existing action stream or an own Subject (ComponentStore)
+- Only the absolute necessary operators are used (as MiniRx Store did already)
 
-Most likely Signal Store and MiniRx Store will depend on a shared library which will provide common code.
+### MiniRx Signal Store is still MiniRx
+MiniRx Signal Store is based on a straight copy of MiniRx Store and has mostly all the features of the original MiniRx (see the Docs to get an impression: https://mini-rx.io/).
+
+Most likely Signal Store and MiniRx Store will depend on a shared library which will provide common code. All libraries will reside in the same Nx mono-repo.
 
 MiniRx Store will still be maintained and stays a perfect state management library if you want to go all-in with RxJS (and it is framework agnostic!). 
 
