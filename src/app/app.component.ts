@@ -1,4 +1,4 @@
-import { Component, computed } from '@angular/core';
+import {Component, computed, inject} from '@angular/core';
 import {
   configureStore,
   getFeatureState, ImmutableStateExtension,
@@ -53,6 +53,10 @@ const store = configureStore({
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
+  // Feature Store
+  counterFs = inject(CounterFeatureStore);
+
+  // Store (Redux)
   count = getFeatureState<number>(store.state, 'count');
   doubleCount = computed(() => {
     return this.count() * 2;
@@ -65,7 +69,4 @@ export class AppComponent {
   dec() {
     store.dispatch(decrement());
   }
-
-  // Feature Store
-  counterFs = new CounterFeatureStore();
 }
