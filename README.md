@@ -34,8 +34,9 @@ Proposed package name: @mini-rx/signal-store
 - `update` instead of `setState` (inspired by the Angular Signals API)
 
 ### Based on Angular Signals
-The MiniRx Signal Store uses **Angular Signal**, the new reactive primitive of Angular.
-RxJS BehaviorSubject has been refactored to Signals internally. State is exposed as Signal. 
+Signals are the new reactive primitive of Angular.
+
+MiniRx Signal Store uses Signals internally, and the state of the Store is exposed as Signal.
 
 Signals in Angular have some advantages, compared to RxJS:
 - write subscription free code, even without using the async pipe
