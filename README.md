@@ -30,6 +30,7 @@ Proposed package name: @mini-rx/signal-store
 - no lazy state initialisation (Signals encourage to have a meaningful initial state)
 - ~~no `select` method / no selectors (with Signals you can "select" state with `computed`)~~ maybe there should be a select method and memoized selectors!? That would make refactors from the original MiniRx to Signal Store much more straightforward
 - state is only available as Signal
+- all internal usages of RxJS BehaviorSubject have been refactored to Angular Signal
 - `update` instead of `setState` (inspired by the Angular Signals API)
 
 ### Based on Angular Signals
