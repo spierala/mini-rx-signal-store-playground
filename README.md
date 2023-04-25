@@ -13,6 +13,8 @@ MiniRx is a highly flexible **state management** solution and scales with your n
 * Manage **global state** with a minimum of boilerplate using **Feature Stores**
 * Manage **local component state** with **Component Stores**
 
+MiniRx always tries to find the sweet spot between powerful, simple and lightweight.
+
 ### MiniRx Signal Store
 
 #### Goal
