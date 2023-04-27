@@ -155,7 +155,9 @@
               "projects/signal-store-demo/src/assets"
             ],
             "styles": [
-              "projects/signal-store-demo/src/styles.css"
+              "projects/signal-store-demo/src/styles.css",
+              "node_modules/bootstrap/dist/css/bootstrap.css",
+              "node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": []
           },
