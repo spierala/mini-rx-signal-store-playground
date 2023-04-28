@@ -4,13 +4,13 @@
     </nav>
 
     <div class="container">
-        <ng-container *ngIf="userStore.user$ | async as user">
+        <ng-container *ngIf="userStore.user()">
             <div class="form-group">
                 <label for="firstName">First name</label>
                 <input
                     class="form-control"
                     type="text"
-                    [ngModel]="user.firstName"
+                    [ngModel]="userStore.user().firstName"
                     (ngModelChange)="userStore.updateUser({ firstName: $event })"
                     id="firstName"
                     name="firstName"
@@ -22,7 +22,7 @@
                 <input
                     class="form-control"
                     type="text"
-                    [ngModel]="user.lastName"
+                    [ngModel]="userStore.user().lastName"
                     (ngModelChange)="userStore.updateUser({ lastName: $event })"
                     id="lastName"
                     name="lastName"
@@ -36,14 +36,14 @@
                 <span class="flex-grow-1">Permissions</span>
             </div>
             <div class="card-body">
-                <div class="form-group" *ngIf="userStore.permissions$ | async as permissions">
+                <div class="form-group" *ngIf="userStore.permissions()">
                     <div class="custom-control custom-switch">
                         <input
                             type="checkbox"
                             class="custom-control-input"
                             id="canUpdateProducts"
                             name="canUpdateProducts"
-                            [ngModel]="permissions.canUpdateProducts"
+                            [ngModel]="userStore.permissions().canUpdateProducts"
                             (ngModelChange)="userStore.toggleCanUpdateProducts()"
                         />
                         <label class="custom-control-label" for="canUpdateProducts">

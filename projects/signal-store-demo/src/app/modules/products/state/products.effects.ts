@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { mergeMap, startWith } from 'rxjs/operators';
-import { Action, Actions, createEffect, mapResponse, undo } from 'mini-rx-store';
+import { Action, Actions, createEffect, mapResponse, undo } from '@mini-rx/signal-store';
 import { ofType, toPayload } from 'ts-action-operators';
 import {
     createProduct,

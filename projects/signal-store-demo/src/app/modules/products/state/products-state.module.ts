@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { EffectsModule, StoreModule } from 'mini-rx-store-ng';
+import { EffectsModule, StoreModule } from '@mini-rx/signal-store';
 import { ProductsEffects } from './products.effects';
 import { productsReducer } from './products.reducer';
 

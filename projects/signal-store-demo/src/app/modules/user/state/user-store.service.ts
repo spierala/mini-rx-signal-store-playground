@@ -1,6 +1,5 @@
-import { Injectable } from '@angular/core';
-import { createFeatureSelector, createSelector, FeatureStore } from 'mini-rx-store';
-import { Observable } from 'rxjs';
+import { computed, Injectable, Signal } from '@angular/core';
+import { FeatureStore } from '@mini-rx/signal-store';
 
 export const featureKeyUser = 'user';
 
@@ -28,30 +27,26 @@ const initialState: UserState = {
     },
 };
 
-const getUserFeatureState = createFeatureSelector<UserState>();
-const getUser = createSelector(getUserFeatureState, (state) => state.user);
-const getUserFullName = createSelector(getUser, (user) => {
-    if (user.firstName === '' && user.lastName === '') {
-        return 'John McClane';
-    }
-    return user.firstName + ' ' + user.lastName;
-});
-const getPermissions = createSelector(getUserFeatureState, (state) => state.permissions);
-
 @Injectable({
     providedIn: 'root',
 })
 export class UserStore extends FeatureStore<UserState> {
-    permissions$: Observable<Permissions> = this.select(getPermissions);
-    userFullName$: Observable<string> = this.select(getUserFullName);
-    user$: Observable<User> = this.select(getUser);
+    permissions: Signal<Permissions> = computed(() => this.state().permissions);
+    userFullName: Signal<string> = computed(() => {
+      const user = this.user();
+      if (user.firstName === '' && user.lastName === '') {
+        return 'John McClane';
+      }
+      return user.firstName + ' ' + user.lastName;
+    });
+    user: Signal<User> = computed(() => this.state().user);
 
     constructor() {
         super('user', initialState);
     }
 
     toggleCanUpdateProducts() {
-        this.setState((state) => ({
+        this.update((state) => ({
             permissions: {
                 ...state.permissions,
                 canUpdateProducts: !state.permissions.canUpdateProducts,
@@ -60,7 +55,7 @@ export class UserStore extends FeatureStore<UserState> {
     }
 
     updateUser(user: Partial<User>) {
-        this.setState((state) => ({
+        this.update((state) => ({
             user: {
                 ...state.user,
                 ...user,

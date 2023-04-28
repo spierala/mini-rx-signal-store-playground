@@ -36,3 +36,7 @@ export {tapResponse} from './lib/tap-response';
 export {mapResponse} from './lib/map-response';
 export {createEffect} from './lib/create-effect';
 export {undo} from './lib/actions';
+
+export { StoreRootModule, StoreModule, StoreFeatureModule } from './lib/ng-modules/store.module';
+export { EffectsModule } from './lib/ng-modules/effects.module';
+export { ComponentStoreModule } from './lib/ng-modules/component-store.module';

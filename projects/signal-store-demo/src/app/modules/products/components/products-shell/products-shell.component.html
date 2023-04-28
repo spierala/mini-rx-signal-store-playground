@@ -1,10 +1,10 @@
-<div class="d-flex flex-column h-100" *ngIf="userStore.permissions$ | async as permissions">
+<div class="d-flex flex-column h-100" *ngIf="userStore.permissions()">
     <nav class="navbar navbar-light bg-light mb-1">
         <a class="navbar-brand">Products</a>
         <div class="d-flex flex-grow-1 mb-2 justify-content-between mt-2">
             <div>
                 <button
-                    *ngIf="permissions.canUpdateProducts"
+                    *ngIf="userStore.permissions().canUpdateProducts"
                     class="btn btn-primary btn-sm"
                     (click)="productsStore.newProduct()"
                 >
@@ -12,7 +12,7 @@
                 </button>
             </div>
             <app-product-filter
-                [search]="(productsStore.search$ | async)!"
+                [search]="(productsStore.search())"
                 (searchChanged)="productsStore.updateSearch($event)"
             ></app-product-filter>
         </div>
@@ -37,20 +37,20 @@
         <div class="row">
             <div class="col">
                 <app-product-list
-                    [products]="(productsStore.products$ | async)!"
-                    [selectedProduct]="(productsStore.selectedProduct$ | async)!"
-                    [displayCode]="(productsStore.displayCode$ | async)!"
-                    [showCartBtn]="!permissions.canUpdateProducts"
+                    [products]="productsStore.products()"
+                    [selectedProduct]="productsStore.selectedProduct()"
+                    [displayCode]="productsStore.displayCode()"
+                    [showCartBtn]="!userStore.permissions().canUpdateProducts"
                     (productSelect)="productsStore.selectProduct($event)"
                     (displayCodeChange)="productsStore.toggleProductCode($event)"
                     (addToCart)="productsStore.addProductToCart($event)"
                 ></app-product-list>
             </div>
-            <div class="col" *ngIf="productsStore.selectedProduct$ | async as selectedProduct">
+            <div class="col" *ngIf="productsStore.selectedProduct()">
                 <app-product-detail
-                    [product]="selectedProduct"
-                    [detailTitle]="(productsStore.detailTitle$ | async)!"
-                    [permissions]="(userStore.permissions$ | async)!"
+                    [product]="productsStore.selectedProduct()!"
+                    [detailTitle]="productsStore.detailTitle()"
+                    [permissions]="userStore.permissions()"
                     (create)="productsStore.create($event)"
                     (update)="productsStore.update($event)"
                     (delete)="productsStore.delete($event)"
