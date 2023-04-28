@@ -1,7 +1,6 @@
-import { Injectable } from '@angular/core';
-
+import {Injectable, Signal} from '@angular/core';
 import * as fromProducts from './products.reducer';
-import { createFeatureSelector, createSelector, Store } from 'mini-rx-store';
+import { createFeatureSelector, createSelector, Store } from '@mini-rx/signal-store';
 import {
     addProductToCart,
     clearCurrentProduct,
@@ -16,7 +15,6 @@ import {
     updateSearch,
 } from './products.actions';
 import { Product } from '../models/product';
-import { Observable } from 'rxjs';
 import { CartItem } from '../models/cart-item';
 import { featureKeyUser, UserState } from '../../user/state/user-store.service';
 
@@ -87,16 +85,16 @@ const getDetailTitle = createSelector(
     providedIn: 'root',
 })
 export class ProductsStore {
-    // STATE OBSERVABLES
-    displayCode$: Observable<boolean> = this.store.select(getShowProductCode);
-    selectedProduct$: Observable<Product | undefined> = this.store.select(getSelectedProduct);
-    products$: Observable<Product[]> = this.store.select(getFilteredProducts);
-    search$: Observable<string> = this.store.select(getSearch);
-    cartItems$: Observable<CartItem[]> = this.store.select(getCartItemsWithExtraData);
-    cartItemsAmount$: Observable<number> = this.store.select(getCartItemsAmount);
-    cartTotalPrice$: Observable<number> = this.store.select(getCartTotalPrice);
-    hasCartItems$: Observable<boolean> = this.store.select(getHasCartItems);
-    detailTitle$: Observable<string> = this.store.select(getDetailTitle);
+    // SIGNALS
+    displayCode: Signal<boolean> = this.store.select(getShowProductCode);
+    selectedProduct: Signal<Product | undefined> = this.store.select(getSelectedProduct);
+    products: Signal<Product[]> = this.store.select(getFilteredProducts);
+    search: Signal<string> = this.store.select(getSearch);
+    cartItems: Signal<CartItem[]> = this.store.select(getCartItemsWithExtraData);
+    cartItemsAmount: Signal<number> = this.store.select(getCartItemsAmount);
+    cartTotalPrice: Signal<number> = this.store.select(getCartTotalPrice);
+    hasCartItems: Signal<boolean> = this.store.select(getHasCartItems);
+    detailTitle: Signal<string> = this.store.select(getDetailTitle);
 
     constructor(private store: Store) {
         this.load();

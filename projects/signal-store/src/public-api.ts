@@ -10,9 +10,9 @@ export {
   createComponentStore,
   configureComponentStores,
 } from './lib/component-store';
-export {
-  getFeatureState
-} from './lib/selector';
+export
+  *
+ from './lib/selector';
 export {
   Action,
   Reducer,
