@@ -13,13 +13,13 @@ import {Signal} from "@angular/core";
 export abstract class Store {
     // Abstract class for Angular Dependency injection
     // mini-rx-store itself uses `Store` just as a type (return type of `configureStore`)
-    abstract state: Signal<AppState>;
     abstract feature<StateType>(
         featureKey: string,
         reducer: Reducer<StateType>,
         config?: FeatureConfig<StateType>
     ): void;
     abstract dispatch(action: Action): void;
+    abstract select<R>(mapFn: (state: AppState) => R): Signal<R>;
     abstract effect(effect: Observable<any>): void;
 }
 
@@ -32,7 +32,7 @@ export function configureStore(config: StoreConfig<AppState>): Store | never {
 
         return {
             feature: addFeature,
-            state: appState,
+            select: appState.select.bind(appState),
             dispatch,
             effect,
         };

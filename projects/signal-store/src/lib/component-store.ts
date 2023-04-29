@@ -20,7 +20,7 @@ import {
     undo,
 } from './actions';
 import { ActionsOnQueue } from './actions-on-queue';
-import {computed, signal} from "@angular/core";
+import {SignalState} from "./signal-state";
 
 let componentStoreConfig: ComponentStoreConfig | undefined = undefined;
 
@@ -46,8 +46,8 @@ export class ComponentStore<StateType extends object>
     implements ComponentStoreLike<StateType>
 {
     private actionsOnQueue = new ActionsOnQueue();
-    #state = signal(this.initialState);
-    state = computed(() => this.#state());
+    private _state = new SignalState(this.initialState);
+    state = this._state.select();
     private readonly combinedMetaReducer: MetaReducer<StateType>;
     private readonly reducer: Reducer<StateType>;
     private hasUndoExtension = false;
@@ -93,16 +93,12 @@ export class ComponentStore<StateType extends object>
         this._sub.add(
             this.actionsOnQueue.actions$.subscribe((action) => {
                 const newState: StateType = this.reducer(
-                    this.#state(),
+                    this._state.getValue(),
                     action
                 );
-                this.#state.set(newState);
+                this._state.set(newState);
             })
         );
-
-        // if (initialState) {
-        //     this.setInitialState(initialState);
-        // }
     }
 
     /** @internal

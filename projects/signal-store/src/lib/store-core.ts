@@ -23,7 +23,8 @@ import { defaultEffectsErrorHandler } from './default-effects-error-handler';
 import { combineReducers } from './combine-reducers';
 import { createMiniRxAction, MiniRxActionType } from './actions';
 import { ActionsOnQueue } from './actions-on-queue';
-import { computed, signal, WritableSignal } from '@angular/core';
+import {computed, Signal, signal, WritableSignal} from '@angular/core';
+import {SignalState} from "./signal-state";
 
 export let hasUndoExtension = false;
 let isStoreInitialized = false;
@@ -85,7 +86,7 @@ const actionsOnQueue = new ActionsOnQueue();
 export const actions$: Actions = actionsOnQueue.actions$;
 
 // APP STATE
-export const appState = signal<AppState>({});
+export const appState = new SignalState<AppState>({});
 
 // Wire up the Redux Store: Init reducer state, subscribe to the actions and reducer Observable
 // Called by `configureStore` and `addReducer`
@@ -102,7 +103,7 @@ function initStore() {
     // Listen to the Actions stream and update state accordingly
     actionsOnQueue.actions$.subscribe((action) => {
         const newState: AppState = reducer()(
-            appState(),
+            appState.getValue(),
             action
         );
         appState.set(newState);

@@ -10,7 +10,7 @@ import {
 } from './actions';
 import { BaseStore } from './base-store';
 import { addFeature, appState, dispatch, hasUndoExtension, removeFeature } from './store-core';
-import {computed, Signal} from "@angular/core";
+import {Signal} from "@angular/core";
 
 export class FeatureStore<StateType extends object>
     extends BaseStore<StateType>
@@ -21,11 +21,9 @@ export class FeatureStore<StateType extends object>
         return this._featureKey;
     }
 
-    state: Signal<StateType> = computed(() => {
-      return appState()[this.featureKey];
-    });
+  state: Signal<StateType> = appState.select(state => state[this.featureKey])
 
-    private readonly featureId: string;
+  private readonly featureId: string;
 
     constructor(
         featureKey: string,
