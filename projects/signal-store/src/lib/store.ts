@@ -20,6 +20,7 @@ export abstract class Store {
     ): void;
     abstract dispatch(action: Action): void;
     abstract select<R>(mapFn: (state: AppState) => R): Signal<R>;
+    abstract selectFromSignal<R>(mapFn: (stateSignal: Signal<AppState>) => Signal<R>): Signal<R>;
     abstract effect(effect: Observable<any>): void;
 }
 
@@ -33,6 +34,7 @@ export function configureStore(config: StoreConfig<AppState>): Store | never {
         return {
             feature: addFeature,
             select: appState.select.bind(appState),
+            selectFromSignal: appState.selectFromSignal.bind(appState),
             dispatch,
             effect,
         };

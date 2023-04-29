@@ -21,4 +21,8 @@ export class SignalState<StateType extends object> {
       return mapFn ? mapFn(this._state()) : this._state();
     });
   }
+
+  selectFromSignal<R>(mapFn: (stateSignal: Signal<StateType>) => Signal<R>): Signal<R> {
+    return mapFn(this._state);
+  }
 }

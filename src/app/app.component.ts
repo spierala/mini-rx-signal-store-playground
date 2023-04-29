@@ -1,4 +1,4 @@
-import {Component, computed, inject} from '@angular/core';
+import {Component, computed, inject, Signal} from '@angular/core';
 import {
   configureStore,
   getFeatureState, ImmutableStateExtension,
@@ -7,6 +7,7 @@ import {
 } from '@mini-rx/signal-store';
 import { action, on, reducer } from 'ts-action';
 import { CounterFeatureStore } from './counter-feature-store';
+import {AppState} from "mini-rx-store/lib/models";
 
 // Actions
 const increment = action('increment');
@@ -33,6 +34,9 @@ const store = configureStore({
   ],
 });
 
+const getCounterFeature = (appState: Signal<AppState>) => computed(() => appState()['count']);
+const getDoubleCount = (appState: Signal<AppState>) => computed(() => getCounterFeature(appState)() * 2);
+
 @Component({
   selector: 'app-root',
   template: `
@@ -57,10 +61,8 @@ export class AppComponent {
   counterFs = inject(CounterFeatureStore);
 
   // Store (Redux)
-  count = getFeatureState<number>(store.state, 'count');
-  doubleCount = computed(() => {
-    return this.count() * 2;
-  });
+  count = store.selectFromSignal(getCounterFeature);
+  doubleCount = store.selectFromSignal(getDoubleCount);
 
   inc() {
     store.dispatch(increment());
