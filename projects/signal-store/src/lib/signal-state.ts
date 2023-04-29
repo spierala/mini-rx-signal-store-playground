@@ -6,7 +6,6 @@ export class SignalState<StateType extends object> {
   constructor(private initialState: StateType) {}
 
   set(v: StateType) {
-    console.log('set', v)
     this._state.set(v);
   }
 
