@@ -1,14 +1,8 @@
 import {Component, computed, inject, signal, Signal} from '@angular/core';
-import {
-  configureStore,
-  getFeatureState, ImmutableStateExtension,
-  ReduxDevtoolsExtension,
-  UndoExtension,
-} from '@mini-rx/signal-store';
-import { action, on, reducer } from 'ts-action';
-import { CounterFeatureStore } from './counter-feature-store';
+import {configureStore, ImmutableStateExtension, ReduxDevtoolsExtension, UndoExtension,} from '@mini-rx/signal-store';
+import {action, on, reducer} from 'ts-action';
+import {CounterFeatureStore} from './counter-feature-store';
 import {AppState} from "mini-rx-store/lib/models";
-import {count} from "rxjs";
 
 // Actions
 const increment = action('increment');

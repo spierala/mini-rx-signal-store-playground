@@ -24,9 +24,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { memoizeOne } from './memoize-one';
+import {computed, Signal} from "@angular/core";
+import {AppState} from "./models";
 
-export type Selector<T, V> = (state: T) => V;
+export type Selector<T, V> = (state: Signal<T>) => Signal<V>;
 
 export function createSelector<State, S1, Result>(
   s1: Selector<State, S1>,
@@ -99,30 +100,25 @@ export function createSelector<State, S1, S2, S3, S4, S5, S6, S7, S8, Result>(
 export function createSelector(...args: any[]): Selector<any, any> {
   const selectors = args.slice(0, args.length - 1);
   const projector = args[args.length - 1];
-  const memoizedProjector = memoizeOne(projector);
 
-  return memoizeOne((state) => {
-    const selectorResults = selectors.map((fn) => fn(state));
-    return memoizedProjector.apply(null, selectorResults);
-  });
+  return (state) => {
+    const selectorSignals: Signal<any>[] = selectors.map((fn) => fn(state));
+    return computed(() => {
+      const selectorSignalResults: any[] = selectorSignals.map(aSignal => aSignal());
+      return projector(...selectorSignalResults)
+    })
+  };
 }
 
-/** @deprecated Use `createFeatureStateSelector` which is more in line with `createComponentStateSelector` */
-export function createFeatureSelector<T>(featureKey?: string): Selector<object, T>;
-/** @deprecated Use `createFeatureStateSelector` which is more in line with `createComponentStateSelector` */
-export function createFeatureSelector<T, V>(featureKey: keyof T): Selector<T, V>;
-/** @deprecated Use `createFeatureStateSelector` which is more in line with `createComponentStateSelector` */
-export function createFeatureSelector(featureKey?: any): Selector<any, any> {
+export function createFeatureStateSelector<T>(featureKey?: string): Selector<object, T>;
+export function createFeatureStateSelector<T, V>(featureKey: keyof T): Selector<T, V>;
+export function createFeatureStateSelector(featureKey?: any): Selector<any, any> {
   if (featureKey) {
+    debugger
     return createSelector(
-      (state: any) => state[featureKey],
-      (featureState) => featureState
+      (state: any) => state,
+      (state: AppState) => state[featureKey]
     );
   }
   return (state) => state; // Do not memoize: when used with FeatureStore there is a new state object created for every `setState`
-}
-
-export const createFeatureStateSelector = createFeatureSelector;
-export function createComponentStateSelector<T>(): Selector<T, T> {
-  return (state: T) => state;
 }

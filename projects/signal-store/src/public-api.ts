@@ -12,7 +12,7 @@ export {
 } from './lib/component-store';
 export
   *
- from './lib/selector';
+ from './lib/signal-selector';
 export {
   Action,
   Reducer,
