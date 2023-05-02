@@ -21,10 +21,14 @@ export abstract class BaseStore<StateType extends object> {
             return this._dispatchSetStateAction(stateOrCallback, name);
         };
 
+        const result = miniRxIsSignal(stateOrCallback) ?
+          toObservable(stateOrCallback) as Observable<Partial<StateType>>  :
+          stateOrCallback
+
         return (
-            isObservable(stateOrCallback)
-                ? this._sub.add(stateOrCallback.subscribe((v) => dispatchFn(v, name)))
-                : dispatchFn(stateOrCallback as StateOrCallback<StateType>, name)
+            isObservable(result)
+                ? this._sub.add(result.subscribe((v) => dispatchFn(v, name)))
+                : dispatchFn(result as StateOrCallback<StateType>, name)
         ) as SetStateReturn<StateType, P>;
     }
 

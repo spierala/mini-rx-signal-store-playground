@@ -1,8 +1,9 @@
-import {Component, computed, inject, signal, Signal} from '@angular/core';
+import {Component, computed, inject, signal, Signal, effect} from '@angular/core';
 import {configureStore, ImmutableStateExtension, ReduxDevtoolsExtension, UndoExtension,} from '@mini-rx/signal-store';
 import {action, on, reducer} from 'ts-action';
 import {CounterFeatureStore} from './counter-feature-store';
 import {AppState} from "mini-rx-store/lib/models";
+import {toObservable} from "@angular/core/rxjs-interop";
 
 // Actions
 const increment = action('increment');
@@ -78,6 +79,8 @@ const getDoubleCount = createSelector(getCounterState, (count: number) => {
     <button (click)="counterFs.inc()">Inc</button>
     <button (click)="counterFs.undoLast()">Undo Last Action</button>
     <button (click)="counterFs.mutate()">Mutate</button>
+
+    <pre>{{bla()}}</pre>
   `,
   styleUrls: ['./app.component.scss'],
 })
@@ -93,6 +96,26 @@ export class AppComponent {
   protected readonly myState = signal({count: 42});
   myStateCount = getCounterState(this.myState);
   myStateDoubleCount = getDoubleCount(this.myState);
+
+  bla = signal(123)
+
+  constructor() {
+    effect(() => console.log('count', this.count()));
+
+    toObservable(this.count).subscribe(v => {
+      this.bla.update(v => v + 1);
+      console.log('obs', v)
+    })
+
+    this.inc();
+    console.log('count1', this.count())
+    this.inc();
+    console.log('count2', this.count())
+    this.inc();
+    console.log('count3', this.count())
+    this.inc();
+    console.log('count4', this.count())
+  }
 
   incMyState() {
     this.myState.update(v => ({...v, count: v.count + 1}))

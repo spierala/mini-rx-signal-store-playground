@@ -1,5 +1,7 @@
 import {Action, FeatureStore} from '@mini-rx/signal-store';
-import {computed, Injectable} from "@angular/core";
+import {computed, Injectable, signal} from "@angular/core";
+import {pipe} from "rxjs";
+import {tap} from "rxjs/operators";
 
 // State interface
 interface CounterState {
@@ -18,11 +20,27 @@ export class CounterFeatureStore extends FeatureStore<CounterState> {
   count = computed(() => this.state().count);
   doubleCount = computed(() => this.count() * 2);
 
-  lastAction: Action | undefined
+  updateTrigger = signal<Partial<CounterState>>({count: 1000});
+
+  lastAction: Action | undefined;
+
+  loadEfc = this.rxEffect<number>(pipe(
+    tap(v => console.log('load', v))
+  ))
 
   constructor() {
     // Call super with the feature key and the initial state
     super('countFs', counterInitialState);
+
+    // Try rxEffect with a Signal
+    this.loadEfc(this.count);
+
+    setInterval(() => {
+      this.updateTrigger.update(v => ({count: (v.count ?? 0) + 1}))
+    }, 1000);
+
+    // Try update with Signal
+    this.update(this.updateTrigger, 'update trigger')
   }
 
   // Update state with `update`

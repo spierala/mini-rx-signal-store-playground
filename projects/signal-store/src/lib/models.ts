@@ -96,7 +96,7 @@ export interface HasEffectMetadata {
     [EFFECT_METADATA_KEY]: EffectConfig;
 }
 
-export type SetStateParam<T> = StateOrCallback<T> | Observable<Partial<T>>;
+export type SetStateParam<T> = StateOrCallback<T> | Observable<Partial<T>> | Signal<T>;
 export type SetStateReturn<T, P extends SetStateParam<T>> = P extends Observable<Partial<T>>
     ? void
     : Action;
