@@ -49,11 +49,11 @@ class UserFeatureStore extends FeatureStore<UserState> {
     city$ = store.select(getCity);
     someFeatureState$ = store.select(getSomeFeatureSelector);
 
-    loadFn = this.effect((payload$) =>
+    loadFn = this.rxEffect((payload$) =>
         payload$.pipe(mergeMap(() => fakeApiGet().pipe(tap((user) => this.setState(user)))))
     );
 
-    loadFnWithError = this.effect((payload$) =>
+    loadFnWithError = this.rxEffect((payload$) =>
         payload$.pipe(
             mergeMap(() =>
                 fakeApiWithError().pipe(
@@ -202,7 +202,7 @@ describe('FeatureStore', () => {
             return of('someValue');
         }
 
-        const effect = userFeature.effect<number>(mergeMap((v) => apiCall(v)));
+        const effect = userFeature.rxEffect<number>(mergeMap((v) => apiCall(v)));
         effect(1);
 
         const source = new Subject<number>();
@@ -245,7 +245,7 @@ describe('FeatureStore', () => {
 
         const fs: FeatureStore<any> = createFeatureStore('fsWithFailingApi', {});
 
-        const load = fs.effect<void>(
+        const load = fs.rxEffect<void>(
             mergeMap(() => apiCallWithError().pipe(tap(() => fs.setState({}))))
         );
 

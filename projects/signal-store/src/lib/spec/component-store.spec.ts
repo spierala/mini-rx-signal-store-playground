@@ -217,7 +217,7 @@ describe('ComponentStore', () => {
         const effectCallback = jest.fn<void, [number]>();
 
         const cs = createComponentStore(counterInitialState);
-        const myEffect = cs.effect<number>(pipe(tap((v) => effectCallback(v))));
+        const myEffect = cs.rxEffect<number>(pipe(tap((v) => effectCallback(v))));
 
         const counterSource = new Subject<number>();
 

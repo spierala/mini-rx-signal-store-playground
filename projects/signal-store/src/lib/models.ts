@@ -104,7 +104,7 @@ export type SetStateReturn<T, P extends SetStateParam<T>> = P extends Observable
 export interface ComponentStoreLike<StateType> {
     update(stateOrCallback: SetStateParam<StateType>, name?: string): void;
     state: Signal<StateType>;
-    effect(effectFn: (origin$: Observable<any>) => Observable<any>): () => void;
+    rxEffect(effectFn: (origin$: Observable<any>) => Observable<any>): () => void;
     undo(action: Action): void;
     destroy(): void;
 }

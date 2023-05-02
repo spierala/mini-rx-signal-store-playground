@@ -14,6 +14,7 @@ import {
   isFeatureStoreSetStateAction,
 } from './actions';
 import { miniRxNameSpace } from './constants';
+import {isSignal, Signal} from "@angular/core";
 
 export function ofType(
   ...allowedTypes: string[]
@@ -75,4 +76,8 @@ export function sortExtensions<T extends StoreExtension>(extensions: T[]): T[] {
     return [...extensions].sort((a, b) => {
         return a.sortOrder - b.sortOrder;
     });
+}
+
+export function miniRxIsSignal(v: any): v is Signal<any> {
+  return (v?.constructor === Function && isSignal(v as Function))
 }
