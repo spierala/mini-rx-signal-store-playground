@@ -60,6 +60,8 @@ export class FeatureStore<StateType extends object>
             : miniRxError('UndoExtension is not initialized.');
     }
 
+    select = appState.select.bind(appState);
+
     override destroy() {
         super.destroy();
         removeFeature(this._featureKey);

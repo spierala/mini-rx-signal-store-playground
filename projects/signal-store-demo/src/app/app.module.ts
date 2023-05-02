@@ -18,6 +18,7 @@ import {
   UndoExtension
 } from "@mini-rx/signal-store";
 import {ProductsStateModule} from "./modules/products/state/products-state.module";
+import {PixelArtModule} from "./modules/pixel-art/pixel-art.module";
 
 @NgModule({
     imports: [
@@ -54,7 +55,7 @@ import {ProductsStateModule} from "./modules/products/state/products-state.modul
         }),
 
         ProductsStateModule,
-        // PixelArtModule,
+        PixelArtModule,
     ],
     declarations: [AppComponent],
     bootstrap: [AppComponent],

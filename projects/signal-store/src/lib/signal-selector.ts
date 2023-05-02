@@ -114,7 +114,6 @@ export function createFeatureStateSelector<T>(featureKey?: string): Selector<obj
 export function createFeatureStateSelector<T, V>(featureKey: keyof T): Selector<T, V>;
 export function createFeatureStateSelector(featureKey?: any): Selector<any, any> {
   if (featureKey) {
-    debugger
     return createSelector(
       (state: any) => state,
       (state: AppState) => state[featureKey]

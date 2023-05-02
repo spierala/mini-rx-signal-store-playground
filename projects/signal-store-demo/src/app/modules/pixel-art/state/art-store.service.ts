@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { ComponentStore } from 'mini-rx-store';
+import {Injectable, Signal} from '@angular/core';
+import { ComponentStore } from '@mini-rx/signal-store';
 import { Observable, timer } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -13,7 +13,7 @@ const initialState: ArtState = {
 
 @Injectable()
 export class ArtStoreService extends ComponentStore<ArtState> {
-    opacity$: Observable<number> = this.select((state) => state.opacity);
+    opacity: Signal<number> = this.select((state) => state.opacity);
 
     constructor() {
         super(initialState);
@@ -26,10 +26,10 @@ export class ArtStoreService extends ComponentStore<ArtState> {
 
         // You could use JS setTimeout, but that approach would require some cleanup code to cancel the timer when the component destroys
         // setState with Observable manages cleanup (of subscriptions) internally
-        this.setState(delayedOpacity$);
+        this.update(delayedOpacity$);
     }
 
     reset() {
-        this.setState(initialState);
+        this.update(initialState);
     }
 }

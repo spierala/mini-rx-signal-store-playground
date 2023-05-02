@@ -124,6 +124,8 @@ export class ComponentStore<StateType extends object>
             : miniRxError(`${this.constructor.name} has no UndoExtension yet.`);
     }
 
+    select = this._state.select.bind(this._state);
+
     override destroy() {
         // Dispatch an action really just for logging via LoggerExtension
         // Only dispatch if a reducer exists (if an initial state was provided or setInitialState was called)
