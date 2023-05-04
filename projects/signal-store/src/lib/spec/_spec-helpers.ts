@@ -5,11 +5,11 @@ import { combineReducers } from '../combine-reducers';
 import { reducerState } from '../store-core';
 
 export interface UserState {
-    firstName: string;
-    lastName: string;
-    city: string;
-    country: string;
-    err: string | undefined;
+  firstName: string;
+  lastName: string;
+  city: string;
+  country: string;
+  err: string | undefined;
 }
 
 export const userState: UserState = {

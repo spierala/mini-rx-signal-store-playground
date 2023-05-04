@@ -24,23 +24,9 @@ export class CounterFeatureStore extends FeatureStore<CounterState> {
 
   lastAction: Action | undefined;
 
-  loadEfc = this.rxEffect<number>(pipe(
-    tap(v => console.log('load', v))
-  ))
-
   constructor() {
     // Call super with the feature key and the initial state
     super('countFs', counterInitialState);
-
-    // Try rxEffect with a Signal
-    this.loadEfc(this.count);
-
-    setInterval(() => {
-      this.updateTrigger.update(v => ({count: (v.count ?? 0) + 1}))
-    }, 1000);
-
-    // Try update with Signal
-    this.update(this.updateTrigger, 'update trigger')
   }
 
   // Update state with `update`

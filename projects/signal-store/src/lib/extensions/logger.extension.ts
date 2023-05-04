@@ -1,20 +1,23 @@
 import {
-    Action,
-    ExtensionId,
-    HasComponentStoreSupport,
-    MetaReducer,
-    Reducer,
-    StoreExtension,
+  Action,
+  ExtensionId,
+  HasComponentStoreSupport,
+  MetaReducer,
+  Reducer,
+  StoreExtension,
 } from '../models';
 import { beautifyActionForLogging } from '../utils';
 
-export class LoggerExtension extends StoreExtension implements HasComponentStoreSupport {
-    id = ExtensionId.LOGGER;
-    hasCsSupport = true as const;
+export class LoggerExtension
+  extends StoreExtension
+  implements HasComponentStoreSupport
+{
+  id = ExtensionId.LOGGER;
+  hasCsSupport = true as const;
 
-    init(): MetaReducer<any> {
-        return loggerMetaReducer;
-    }
+  init(): MetaReducer<any> {
+    return loggerMetaReducer;
+  }
 }
 
 function loggerMetaReducer(reducer: Reducer<any>): Reducer<any> {

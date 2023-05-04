@@ -23,8 +23,8 @@ import { defaultEffectsErrorHandler } from './default-effects-error-handler';
 import { combineReducers } from './combine-reducers';
 import { createMiniRxAction, MiniRxActionType } from './actions';
 import { ActionsOnQueue } from './actions-on-queue';
-import {computed, Signal, signal, WritableSignal} from '@angular/core';
-import {SelectableSignalState} from "./selectable-signal-state";
+import { computed, signal, WritableSignal } from '@angular/core';
+import { SelectableSignalState } from './selectable-signal-state';
 
 export let hasUndoExtension = false;
 let isStoreInitialized = false;

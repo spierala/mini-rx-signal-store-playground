@@ -1,14 +1,14 @@
 import { createFeatureSelector, createSelector } from '../selector';
 import { Action } from '../models';
 import {
-    counterInitialState,
-    counterReducer,
-    CounterState,
-    counterStringInitialState,
-    counterStringReducer,
-    CounterStringState,
-    resetStoreConfig,
-    store,
+  counterInitialState,
+  counterReducer,
+  CounterState,
+  counterStringInitialState,
+  counterStringReducer,
+  CounterStringState,
+  resetStoreConfig,
+  store,
 } from './_spec-helpers';
 import { UndoExtension } from '../extensions/undo.extension';
 import { FeatureStore } from '../feature-store';
@@ -18,33 +18,33 @@ import { addExtension, addFeature, removeFeature } from '../store-core';
 import { createComponentStore } from '../component-store';
 
 class MyFeatureStore extends FeatureStore<CounterStringState> {
-    count$: Observable<string> = this.select((state) => state.counter);
+  count$: Observable<string> = this.select((state) => state.counter);
 
-    private lastAction: Action | undefined;
+  private lastAction: Action | undefined;
 
-    constructor() {
-        super('featureWithUndo', counterStringInitialState);
+  constructor() {
+    super('featureWithUndo', counterStringInitialState);
+  }
+
+  count(payload: string): Action {
+    return (this.lastAction = this.setState((state) => ({
+      counter: state.counter + payload,
+    })));
+  }
+
+  resetCount() {
+    this.setState(counterStringInitialState);
+  }
+
+  undoLastAction() {
+    if (this.lastAction) {
+      this.undo(this.lastAction);
     }
+  }
 
-    count(payload: string): Action {
-        return (this.lastAction = this.setState((state) => ({
-            counter: state.counter + payload,
-        })));
-    }
-
-    resetCount() {
-        this.setState(counterStringInitialState);
-    }
-
-    undoLastAction() {
-        if (this.lastAction) {
-            this.undo(this.lastAction);
-        }
-    }
-
-    undoActions(actions: Action[]) {
-        actions.forEach((item) => this.undo(item));
-    }
+  undoActions(actions: Action[]) {
+    actions.forEach((item) => this.undo(item));
+  }
 }
 
 describe('Undo Extension', () => {

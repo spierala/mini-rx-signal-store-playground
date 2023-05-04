@@ -5,7 +5,7 @@ import { CounterComponent } from './counter/counter.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-    declarations: [CounterShellComponent, CounterComponent],
-    imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  declarations: [CounterShellComponent, CounterComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
 })
 export class CounterModule {}

@@ -1,17 +1,11 @@
 import {Injectable, Signal} from '@angular/core';
-import { Todo } from '../../todos-shared/models/todo';
-import { TodoFilter } from '../../todos-shared/models/todo-filter';
-import { pipe } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
-import { v4 as uuid } from 'uuid';
-import {
-    Action,
-    createFeatureStateSelector,
-    createSelector,
-    FeatureStore,
-    tapResponse,
-} from '@mini-rx/signal-store';
-import { TodosApiService } from '../../todos-shared/services/todos-api.service';
+import {Todo} from '../../todos-shared/models/todo';
+import {TodoFilter} from '../../todos-shared/models/todo-filter';
+import {pipe} from 'rxjs';
+import {mergeMap} from 'rxjs/operators';
+import {v4 as uuid} from 'uuid';
+import {Action, createFeatureStateSelector, createSelector, FeatureStore, tapResponse,} from '@mini-rx/signal-store';
+import {TodosApiService} from '../../todos-shared/services/todos-api.service';
 
 // STATE INTERFACE
 interface TodosState {

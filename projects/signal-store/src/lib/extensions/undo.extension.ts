@@ -25,13 +25,13 @@
 // SOFTWARE.
 
 import {
-    Action,
-    ExtensionId,
-    ExtensionSortOrder,
-    HasComponentStoreSupport,
-    MetaReducer,
-    Reducer,
-    StoreExtension,
+  Action,
+  ExtensionId,
+  ExtensionSortOrder,
+  HasComponentStoreSupport,
+  MetaReducer,
+  Reducer,
+  StoreExtension,
 } from '../models';
 import { UNDO_ACTION } from '../actions';
 

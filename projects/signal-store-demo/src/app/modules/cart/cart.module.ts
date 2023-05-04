@@ -5,7 +5,7 @@ import { CartRoutingModule } from './cart-routing.module';
 import { CartShellComponent } from './components/cart-shell/cart-shell.component';
 
 @NgModule({
-    declarations: [CartShellComponent],
-    imports: [CommonModule, CartRoutingModule],
+  declarations: [CartShellComponent],
+  imports: [CommonModule, CartRoutingModule],
 })
 export class CartModule {}

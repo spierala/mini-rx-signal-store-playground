@@ -1,7 +1,7 @@
-import {computed, Signal} from '@angular/core';
-import {isSignalSelector, SignalSelector} from "@mini-rx/signal-store";
+import { computed, Signal } from '@angular/core';
+import { isSignalSelector, SignalSelector } from '@mini-rx/signal-store';
 
-type StateSelector<T, R> = (state: T) => R
+type StateSelector<T, R> = (state: T) => R;
 
 export class SelectableSignalState<StateType extends object> {
   constructor(private _state: Signal<StateType>) {}

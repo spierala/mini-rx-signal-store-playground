@@ -1,26 +1,33 @@
 import { configureStore, Store } from '../store';
 import {
-    Action,
-    ActionWithPayload,
-    AppState,
-    ExtensionId,
-    Reducer,
-    ReducerDictionary,
-    StoreExtension,
+  Action,
+  ActionWithPayload,
+  AppState,
+  ExtensionId,
+  Reducer,
+  ReducerDictionary,
+  StoreExtension,
 } from '../models';
 import { createFeatureStateSelector, createSelector } from '../selector';
 import { Observable, of } from 'rxjs';
 import { ofType } from '../utils';
-import { catchError, map, mapTo, mergeMap, take, withLatestFrom } from 'rxjs/operators';
+import {
+  catchError,
+  map,
+  mapTo,
+  mergeMap,
+  take,
+  withLatestFrom,
+} from 'rxjs/operators';
 import { ReduxDevtoolsExtension } from '../extensions/redux-devtools.extension';
 import { cold, hot } from 'jest-marbles';
 import { createFeatureStore, FeatureStore } from '../feature-store';
 import {
-    counterInitialState,
-    counterReducer,
-    CounterState,
-    resetStoreConfig,
-    store,
+  counterInitialState,
+  counterReducer,
+  CounterState,
+  resetStoreConfig,
+  store,
 } from './_spec-helpers';
 import { LoggerExtension } from '../extensions/logger.extension';
 import { createEffect } from '../create-effect';
@@ -29,9 +36,9 @@ import * as StoreCore from '../store-core';
 import { actions$ } from '../store-core';
 
 const asyncUser: Partial<UserState> = {
-    firstName: 'Steven',
-    lastName: 'Seagal',
-    age: 30,
+  firstName: 'Steven',
+  lastName: 'Seagal',
+  age: 30,
 };
 
 const updatedAsyncUser: Partial<UserState> = {

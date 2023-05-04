@@ -1,10 +1,10 @@
-import {Injectable, Signal} from '@angular/core';
+import { Injectable, Signal } from '@angular/core';
 import { ComponentStore } from '@mini-rx/signal-store';
 import { Observable, timer } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 interface ArtState {
-    opacity: number;
+  opacity: number;
 }
 
 const initialState: ArtState = {

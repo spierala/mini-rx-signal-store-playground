@@ -1,7 +1,10 @@
 import { Product } from '../models/product';
 import { action, payload } from 'ts-action';
 
-export const toggleProductCode = action('[Products] Toggle Product Code', payload<boolean>());
+export const toggleProductCode = action(
+  '[Products] Toggle Product Code',
+  payload<boolean>()
+);
 export const selectProduct = action('[Products] Select Product', payload<Product>());
 export const clearCurrentProduct = action('[Products] Clear Current Product');
 export const initializeNewProduct = action('[Products] Initialize New Product');

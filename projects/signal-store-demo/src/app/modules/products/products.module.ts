@@ -9,12 +9,17 @@ import { ProductListComponent } from './components/product-list/product-list.com
 import { ProductFilterComponent } from './components/product-filter/product-filter.component';
 
 @NgModule({
-    declarations: [
-        ProductsShellComponent,
-        ProductDetailComponent,
-        ProductListComponent,
-        ProductFilterComponent,
-    ],
-    imports: [CommonModule, ProductsRoutingModule, FormsModule, ReactiveFormsModule],
+  declarations: [
+    ProductsShellComponent,
+    ProductDetailComponent,
+    ProductListComponent,
+    ProductFilterComponent,
+  ],
+  imports: [
+    CommonModule,
+    ProductsRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
 })
 export class ProductsModule {}

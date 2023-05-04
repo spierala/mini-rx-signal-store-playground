@@ -1,8 +1,8 @@
 import {Injectable, Signal} from '@angular/core';
-import { Todo } from '../../todos-shared/models/todo';
-import { TodoFilter } from '../../todos-shared/models/todo-filter';
-import { TodosApiService } from '../../todos-shared/services/todos-api.service';
-import { FeatureStore } from '@mini-rx/signal-store';
+import {Todo} from '../../todos-shared/models/todo';
+import {TodoFilter} from '../../todos-shared/models/todo-filter';
+import {TodosApiService} from '../../todos-shared/services/todos-api.service';
+import {FeatureStore} from '@mini-rx/signal-store';
 
 // STATE INTERFACE
 interface TodosState {

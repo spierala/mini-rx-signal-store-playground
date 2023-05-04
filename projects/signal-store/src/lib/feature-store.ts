@@ -1,74 +1,94 @@
-import { Action, ComponentStoreLike, FeatureStoreConfig, Reducer, StateOrCallback } from './models';
+import {
+  Action,
+  ComponentStoreLike,
+  FeatureStoreConfig,
+  Reducer,
+  StateOrCallback,
+} from './models';
 import { calcNewState, miniRxError } from './utils';
 import {
-    createMiniRxActionType,
-    FeatureStoreSetStateAction,
-    isFeatureStoreSetStateAction,
-    MiniRxActionType,
-    SetStateActionType,
-    undo,
+  createMiniRxActionType,
+  FeatureStoreSetStateAction,
+  isFeatureStoreSetStateAction,
+  MiniRxActionType,
+  SetStateActionType,
+  undo,
 } from './actions';
 import { BaseStore } from './base-store';
-import {addFeature, dispatch, hasUndoExtension, removeFeature, selectableAppState} from './store-core';
-import {Signal} from "@angular/core";
-import {SelectableSignalState} from "./selectable-signal-state";
+import {
+  addFeature,
+  dispatch,
+  hasUndoExtension,
+  removeFeature,
+  selectableAppState,
+} from './store-core';
+import { Signal } from '@angular/core';
+import { SelectableSignalState } from './selectable-signal-state';
 
 export class FeatureStore<StateType extends object>
-    extends BaseStore<StateType>
-    implements ComponentStoreLike<StateType>
+  extends BaseStore<StateType>
+  implements ComponentStoreLike<StateType>
 {
-    private readonly _featureKey: string;
-    get featureKey(): string {
-        return this._featureKey;
-    }
+  private readonly _featureKey: string;
+  get featureKey(): string {
+    return this._featureKey;
+  }
 
-    state: Signal<StateType> = selectableAppState.select(state => state[this.featureKey]);
-    private selectableState = new SelectableSignalState(this.state)
+  state: Signal<StateType> = selectableAppState.select(
+    (state) => state[this.featureKey]
+  );
+  private selectableState = new SelectableSignalState(this.state);
 
-    private readonly featureId: string;
+  private readonly featureId: string;
 
-    constructor(
-        featureKey: string,
-        initialState: StateType,
-        config: FeatureStoreConfig = {}
-    ) {
-        super();
+  constructor(
+    featureKey: string,
+    initialState: StateType,
+    config: FeatureStoreConfig = {}
+  ) {
+    super();
 
-        this.featureId = generateId();
-        this._featureKey = config.multi ? featureKey + '-' + generateId() : featureKey;
+    this.featureId = generateId();
+    this._featureKey = config.multi
+      ? featureKey + '-' + generateId()
+      : featureKey;
 
-        addFeature<StateType>(
-          this._featureKey,
-          createFeatureStoreReducer(this.featureId, initialState)
-        );
-    }
+    addFeature<StateType>(
+      this._featureKey,
+      createFeatureStoreReducer(this.featureId, initialState)
+    );
+  }
 
-    /** @internal
-     * Implementation of abstract method from BaseStore
-     */
-    _dispatchSetStateAction(
-        stateOrCallback: StateOrCallback<StateType>,
-        name: string | undefined
-    ): Action {
-        const action = createSetStateAction(stateOrCallback, this.featureId, this.featureKey, name);
-        dispatch(action);
-        return action;
-    }
+  /** @internal
+   * Implementation of abstract method from BaseStore
+   */
+  _dispatchSetStateAction(
+    stateOrCallback: StateOrCallback<StateType>,
+    name: string | undefined
+  ): Action {
+    const action = createSetStateAction(
+      stateOrCallback,
+      this.featureId,
+      this.featureKey,
+      name
+    );
+    dispatch(action);
+    return action;
+  }
 
-    // Implementation of abstract method from BaseStore
-    undo(action: Action): void {
-        hasUndoExtension
-            ? dispatch(undo(action))
-            : miniRxError('UndoExtension is not initialized.');
-    }
+  // Implementation of abstract method from BaseStore
+  undo(action: Action): void {
+    hasUndoExtension
+      ? dispatch(undo(action))
+      : miniRxError('UndoExtension is not initialized.');
+  }
 
+  select = this.selectableState.select.bind(this.selectableState);
 
-    select = this.selectableState.select.bind(this.selectableState);
-
-    override destroy() {
-        super.destroy();
-        removeFeature(this._featureKey);
-    }
+  override destroy() {
+    super.destroy();
+    removeFeature(this._featureKey);
+  }
 }
 
 function createFeatureStoreReducer<StateType>(

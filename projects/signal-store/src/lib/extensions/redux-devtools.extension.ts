@@ -1,11 +1,11 @@
 import { tap } from 'rxjs/operators';
 import { Action, AppState, ExtensionId, StoreExtension } from '../models';
-import {actions$, selectableAppState, updateAppState} from '../store-core';
+import { actions$, selectableAppState, updateAppState } from '../store-core';
 import { beautifyActionForLogging, miniRxError } from '../utils';
 
 const defaultOptions: Partial<ReduxDevtoolsOptions> = {
-    name: 'MiniRx - Redux DevTools',
-    traceLimit: 25,
+  name: 'MiniRx - Redux DevTools',
+  traceLimit: 25,
 };
 
 export interface ReduxDevtoolsOptions {
@@ -51,9 +51,10 @@ export class ReduxDevtoolsExtension extends StoreExtension {
             actions$
                 .pipe(
                     tap((action) => {
-                        const state = selectableAppState.select();
-                        const actionForDevTools: Action = beautifyActionForLogging(action, state);
-                        this.devtoolsConnection.send(actionForDevTools, state);
+                        const signalState = selectableAppState.select();
+                        const unwrappedState = signalState();
+                        const actionForDevTools: Action = beautifyActionForLogging(action, unwrappedState);
+                        this.devtoolsConnection.send(actionForDevTools, unwrappedState);
                     })
                 )
                 .subscribe();

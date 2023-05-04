@@ -6,7 +6,7 @@ import { TodosSimpleShellComponent } from './components/todos-simple-shell/todos
 import { TodosSharedModule } from '../todos-shared/todos-shared.module';
 
 @NgModule({
-    declarations: [TodosSimpleShellComponent],
-    imports: [CommonModule, TodosSimpleRoutingModule, TodosSharedModule],
+  declarations: [TodosSimpleShellComponent],
+  imports: [CommonModule, TodosSimpleRoutingModule, TodosSharedModule],
 })
 export class TodosSimpleModule {}

@@ -24,10 +24,15 @@
 // SOFTWARE.
 
 import { Observable } from 'rxjs';
-import { Action, EFFECT_METADATA_KEY, EffectConfig, HasEffectMetadata } from './models';
+import {
+  Action,
+  EFFECT_METADATA_KEY,
+  EffectConfig,
+  HasEffectMetadata,
+} from './models';
 
 const DEFAULT_EFFECT_CONFIG: Readonly<Required<EffectConfig>> = {
-    dispatch: true,
+  dispatch: true,
 };
 
 type DispatchType<T> = T extends { dispatch: infer U } ? U : true;

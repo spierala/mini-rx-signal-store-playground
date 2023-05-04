@@ -1,9 +1,16 @@
-import { Inject, InjectionToken, Injector, ModuleWithProviders, NgModule } from '@angular/core';
-import {Actions, FeatureConfig, Reducer, StoreConfig} from "../models";
-import {Store} from "../store";
-import {actions$} from "../store-core";
+import {
+  Inject,
+  InjectionToken,
+  ModuleWithProviders,
+  NgModule,
+} from '@angular/core';
+import { Actions, FeatureConfig, Reducer, StoreConfig } from '../models';
+import { Store } from '../store';
+import { actions$ } from '../store-core';
 
-export const STORE_CONFIG = new InjectionToken<StoreConfig<any>>('@mini-rx/store-config');
+export const STORE_CONFIG = new InjectionToken<StoreConfig<any>>(
+  '@mini-rx/store-config'
+);
 export const FEATURE_NAMES = new InjectionToken<string[]>('@mini-rx/feature-name');
 export const FEATURE_REDUCERS = new InjectionToken<Reducer<any>[]>('@mini-rx/feature-reducer');
 export const FEATURE_CONFIGS = new InjectionToken<FeatureConfig<any>[]>(

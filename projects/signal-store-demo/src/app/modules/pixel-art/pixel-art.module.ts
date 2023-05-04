@@ -4,8 +4,8 @@ import { PixelArtShellComponent } from './components/pixel-art-shell/pixel-art-s
 import { PixelArtComponent } from './components/pixel-art/pixel-art.component';
 
 @NgModule({
-    declarations: [PixelArtShellComponent, PixelArtComponent],
-    exports: [PixelArtShellComponent],
-    imports: [CommonModule],
+  declarations: [PixelArtShellComponent, PixelArtComponent],
+  exports: [PixelArtShellComponent],
+  imports: [CommonModule],
 })
 export class PixelArtModule {}

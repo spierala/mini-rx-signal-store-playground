@@ -1,7 +1,7 @@
-import { isObservable, Observable, Subject, Subscription } from 'rxjs';
-import { Action, SetStateParam, SetStateReturn, StateOrCallback } from './models';
-import { defaultEffectsErrorHandler } from './default-effects-error-handler';
-import {Injectable, isSignal, Signal} from "@angular/core";
+import {isObservable, Observable, Subject, Subscription} from 'rxjs';
+import {Action, SetStateParam, SetStateReturn, StateOrCallback} from './models';
+import {defaultEffectsErrorHandler} from './default-effects-error-handler';
+import {Injectable, Signal} from "@angular/core";
 import {toObservable} from "@angular/core/rxjs-interop";
 import {miniRxIsSignal} from "./utils";
 

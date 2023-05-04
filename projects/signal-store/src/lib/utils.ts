@@ -14,7 +14,7 @@ import {
   isFeatureStoreSetStateAction,
 } from './actions';
 import { miniRxNameSpace } from './constants';
-import {isSignal, Signal} from "@angular/core";
+import { isSignal, Signal } from '@angular/core';
 
 export function ofType(
   ...allowedTypes: string[]

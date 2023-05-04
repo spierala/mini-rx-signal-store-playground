@@ -24,9 +24,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import {computed, Signal} from "@angular/core";
-import {Action, AppState, EFFECT_METADATA_KEY, HasEffectMetadata} from "./models";
-import {Observable} from "rxjs";
+import { computed, Signal } from '@angular/core';
+import { AppState } from './models';
 
 export const SIGNAL_SELECTOR_KEY = '@mini-rx/signalSelector';
 

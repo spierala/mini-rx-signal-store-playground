@@ -1,27 +1,32 @@
 import { BaseStore } from './base-store';
 import {
-    Action,
-    ComponentStoreConfig,
-    ComponentStoreExtension,
-    ComponentStoreLike,
-    ExtensionId,
-    MetaReducer,
-    Reducer,
-    StateOrCallback,
+  Action,
+  ComponentStoreConfig,
+  ComponentStoreExtension,
+  ComponentStoreLike,
+  ExtensionId,
+  MetaReducer,
+  Reducer,
+  StateOrCallback,
 } from './models';
-import { calcNewState, combineMetaReducers, miniRxError, sortExtensions } from './utils';
 import {
-    ComponentStoreSetStateAction,
-    createMiniRxAction,
-    createMiniRxActionType,
-    isComponentStoreSetStateAction,
-    MiniRxActionType,
-    SetStateActionType,
-    undo,
+  calcNewState,
+  combineMetaReducers,
+  miniRxError,
+  sortExtensions,
+} from './utils';
+import {
+  ComponentStoreSetStateAction,
+  createMiniRxAction,
+  createMiniRxActionType,
+  isComponentStoreSetStateAction,
+  MiniRxActionType,
+  SetStateActionType,
+  undo,
 } from './actions';
 import { ActionsOnQueue } from './actions-on-queue';
-import {SelectableSignalState} from "./selectable-signal-state";
-import {signal} from "@angular/core";
+import { SelectableSignalState } from './selectable-signal-state';
+import { signal } from '@angular/core';
 
 let componentStoreConfig: ComponentStoreConfig | undefined = undefined;
 

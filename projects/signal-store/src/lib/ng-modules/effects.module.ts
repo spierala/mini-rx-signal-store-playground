@@ -24,21 +24,21 @@
 // SOFTWARE.
 
 import {
-    Inject,
-    InjectionToken,
-    ModuleWithProviders,
-    NgModule,
-    Optional,
-    Type,
+  Inject,
+  InjectionToken,
+  ModuleWithProviders,
+  NgModule,
+  Optional,
+  Type,
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
-    fromClassesWithEffectsToClassProviders,
-    fromObjectsWithEffectsToEffects,
+  fromClassesWithEffectsToClassProviders,
+  fromObjectsWithEffectsToEffects,
 } from './effects-mapper';
 import { StoreFeatureModule, StoreRootModule } from './store.module';
-import {Store} from "../store";
-import {Action} from "../models";
+import { Store } from '../store';
+import { Action } from '../models';
 
 const OBJECTS_WITH_EFFECTS = new InjectionToken('@mini-rx/objectsWithEffects');
 

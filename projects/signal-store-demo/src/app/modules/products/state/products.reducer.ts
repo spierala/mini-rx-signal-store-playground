@@ -1,21 +1,21 @@
 import {
-    addProductToCart,
-    clearCurrentProduct,
-    createProductSuccess,
-    deleteProductSuccess,
-    initializeNewProduct,
-    loadFail,
-    loadSuccess,
-    removeProductFromCart,
-    selectProduct,
-    toggleProductCode,
-    updateProductOptimistic,
-    updateProductSuccess,
-    updateSearch,
+  addProductToCart,
+  clearCurrentProduct,
+  createProductSuccess,
+  deleteProductSuccess,
+  initializeNewProduct,
+  loadFail,
+  loadSuccess,
+  removeProductFromCart,
+  selectProduct,
+  toggleProductCode,
+  updateProductOptimistic,
+  updateProductSuccess,
+  updateSearch,
 } from './products.actions';
-import { on, reducer } from 'ts-action';
-import { Product } from '../models/product';
-import { CartItem } from '../models/cart-item';
+import {on, reducer} from 'ts-action';
+import {Product} from '../models/product';
+import {CartItem} from '../models/cart-item';
 
 // STATE INTERFACE
 export interface ProductState {

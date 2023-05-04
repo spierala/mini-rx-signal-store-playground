@@ -28,14 +28,14 @@ import { Observable } from 'rxjs';
 import { hasEffectMetaData } from '../utils';
 
 export const fromClassesWithEffectsToClassProviders = (
-    injectionToken: InjectionToken<any>,
-    classesWithEffects: Type<any>[]
+  injectionToken: InjectionToken<any>,
+  classesWithEffects: Type<any>[]
 ): ClassProvider[] =>
-    classesWithEffects.map((classWithEffects) => ({
-        provide: injectionToken,
-        useClass: classWithEffects,
-        multi: true,
-    }));
+  classesWithEffects.map((classWithEffects) => ({
+    provide: injectionToken,
+    useClass: classWithEffects,
+    multi: true,
+  }));
 
 export const fromObjectsWithEffectsToEffects = (objectsWithEffects: any[]): Observable<any>[] =>
     objectsWithEffects.reduce((acc, objectWithEffects) => {

@@ -1,22 +1,22 @@
 import {Injectable, Signal} from '@angular/core';
 import * as fromProducts from './products.reducer';
-import { createFeatureStateSelector, createSelector, Store } from '@mini-rx/signal-store';
+import {createFeatureStateSelector, createSelector, Store} from '@mini-rx/signal-store';
 import {
-    addProductToCart,
-    clearCurrentProduct,
-    createProduct,
-    deleteProduct,
-    initializeNewProduct,
-    load,
-    removeProductFromCart,
-    selectProduct,
-    toggleProductCode,
-    updateProduct,
-    updateSearch,
+  addProductToCart,
+  clearCurrentProduct,
+  createProduct,
+  deleteProduct,
+  initializeNewProduct,
+  load,
+  removeProductFromCart,
+  selectProduct,
+  toggleProductCode,
+  updateProduct,
+  updateSearch,
 } from './products.actions';
-import { Product } from '../models/product';
-import { CartItem } from '../models/cart-item';
-import { featureKeyUser, UserState } from '../../user/state/user-store.service';
+import {Product} from '../models/product';
+import {CartItem} from '../models/cart-item';
+import {featureKeyUser, UserState} from '../../user/state/user-store.service';
 
 // MEMOIZED SELECTORS
 const getProductFeatureState = createFeatureStateSelector<fromProducts.ProductState>('products');

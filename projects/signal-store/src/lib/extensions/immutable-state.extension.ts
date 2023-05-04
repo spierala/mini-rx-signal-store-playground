@@ -24,22 +24,25 @@
 // SOFTWARE.
 
 import {
-    Action,
-    ExtensionId,
-    HasComponentStoreSupport,
-    MetaReducer,
-    Reducer,
-    StoreExtension,
+  Action,
+  ExtensionId,
+  HasComponentStoreSupport,
+  MetaReducer,
+  Reducer,
+  StoreExtension,
 } from '../models';
 import { deepFreeze } from '../deep-freeze';
 
-export class ImmutableStateExtension extends StoreExtension implements HasComponentStoreSupport {
-    id = ExtensionId.IMMUTABLE_STATE;
-    hasCsSupport = true as const;
+export class ImmutableStateExtension
+  extends StoreExtension
+  implements HasComponentStoreSupport
+{
+  id = ExtensionId.IMMUTABLE_STATE;
+  hasCsSupport = true as const;
 
-    init(): MetaReducer<any> {
-        return storeFreeze;
-    }
+  init(): MetaReducer<any> {
+    return storeFreeze;
+  }
 }
 
 function storeFreeze(reducer: Reducer<any>): Reducer<any> {

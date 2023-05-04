@@ -2,9 +2,9 @@ import { Action, StateOrCallback } from './models';
 import { miniRxNameSpace } from './constants';
 
 export const enum MiniRxActionType {
-    INIT = 'init',
-    DESTROY = 'destroy',
-    SET_STATE = 'set-state',
+  INIT = 'init',
+  DESTROY = 'destroy',
+  SET_STATE = 'set-state',
 }
 
 export const enum SetStateActionType {

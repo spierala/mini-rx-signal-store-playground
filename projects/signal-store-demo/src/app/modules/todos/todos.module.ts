@@ -6,13 +6,13 @@ import { TodosSharedModule } from '../todos-shared/todos-shared.module';
 import { TodosRoutingModule } from './todos-routing.module';
 
 @NgModule({
-    declarations: [TodosShellComponent],
-    imports: [
-        TodosRoutingModule,
-        FormsModule,
-        ReactiveFormsModule,
-        CommonModule,
-        TodosSharedModule,
-    ],
+  declarations: [TodosShellComponent],
+  imports: [
+    TodosRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    CommonModule,
+    TodosSharedModule,
+  ],
 })
 export class TodosModule {}

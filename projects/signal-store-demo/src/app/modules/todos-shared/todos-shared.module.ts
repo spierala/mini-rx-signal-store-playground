@@ -6,8 +6,8 @@ import { TodoDetailComponent } from './components/todo-detail/todo-detail.compon
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-    declarations: [TodoFilterComponent, TodoListComponent, TodoDetailComponent],
-    exports: [TodoListComponent, TodoDetailComponent, TodoFilterComponent],
-    imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  declarations: [TodoFilterComponent, TodoListComponent, TodoDetailComponent],
+  exports: [TodoListComponent, TodoDetailComponent, TodoFilterComponent],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
 })
 export class TodosSharedModule {}

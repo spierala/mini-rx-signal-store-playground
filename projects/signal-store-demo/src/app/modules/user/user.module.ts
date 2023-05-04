@@ -4,7 +4,7 @@ import { UserShellComponent } from './components/user-shell/user-shell.component
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
-    declarations: [UserShellComponent],
-    imports: [CommonModule, FormsModule],
+  declarations: [UserShellComponent],
+  imports: [CommonModule, FormsModule],
 })
 export class UserModule {}

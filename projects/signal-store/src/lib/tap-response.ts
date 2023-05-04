@@ -28,9 +28,9 @@ import { catchError, finalize, tap } from 'rxjs/operators';
 import { miniRxConsoleError } from './utils';
 
 type TapResponseObj<T> = {
-    next?: (next: T) => void;
-    error: (error: any) => void;
-    finalize?: () => void;
+  next?: (next: T) => void;
+  error: (error: any) => void;
+  finalize?: () => void;
 };
 
 export function tapResponse<T>(obj?: TapResponseObj<T>): (source: Observable<T>) => Observable<T>;

@@ -4,12 +4,12 @@ import { Observable, of, Subject } from 'rxjs';
 import { createFeatureSelector, createSelector } from '../selector';
 import { cold, hot } from 'jest-marbles';
 import {
-    counterInitialState,
-    counterReducer,
-    CounterState,
-    store,
-    userState,
-    UserState,
+  counterInitialState,
+  counterReducer,
+  CounterState,
+  store,
+  userState,
+  UserState,
 } from './_spec-helpers';
 import { Action, Reducer } from '../models';
 import { tapResponse } from '../tap-response';

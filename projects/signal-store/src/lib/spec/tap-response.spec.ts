@@ -28,167 +28,175 @@ import { concatMap, finalize } from 'rxjs/operators';
 import { tapResponse } from '../tap-response';
 
 describe('tapResponse', () => {
-    it('should invoke next callback on next', () => {
-        const nextCallback = jest.fn<void, [number]>();
+  it('should invoke next callback on next', () => {
+    const nextCallback = jest.fn<void, [number]>();
 
-        of(1, 2, 3).pipe(tapResponse(nextCallback, noop)).subscribe();
+    of(1, 2, 3).pipe(tapResponse(nextCallback, noop)).subscribe();
 
-        expect(nextCallback.mock.calls).toEqual([[1], [2], [3]]);
+    expect(nextCallback.mock.calls).toEqual([[1], [2], [3]]);
 
-        nextCallback.mockReset();
+    nextCallback.mockReset();
 
-        // with object parameter
-        of(1, 2, 3)
-            .pipe(tapResponse({ next: nextCallback, error: noop }))
-            .subscribe();
+    // with object parameter
+    of(1, 2, 3)
+      .pipe(tapResponse({ next: nextCallback, error: noop }))
+      .subscribe();
 
-        expect(nextCallback.mock.calls).toEqual([[1], [2], [3]]);
-    });
+    expect(nextCallback.mock.calls).toEqual([[1], [2], [3]]);
+  });
 
-    it('should invoke error callback on error', () => {
-        const errorCallback = jest.fn<void, [{ message: string }]>();
-        const error = { message: 'error' };
+  it('should invoke error callback on error', () => {
+    const errorCallback = jest.fn<void, [{ message: string }]>();
+    const error = { message: 'error' };
 
-        throwError(() => error)
-            .pipe(tapResponse(noop, errorCallback))
-            .subscribe();
+    throwError(() => error)
+      .pipe(tapResponse(noop, errorCallback))
+      .subscribe();
 
-        expect(errorCallback).toHaveBeenCalledWith(error);
+    expect(errorCallback).toHaveBeenCalledWith(error);
 
-        errorCallback.mockReset();
+    errorCallback.mockReset();
 
-        // with object parameter
-        throwError(() => error)
-            .pipe(tapResponse({ error: errorCallback }))
-            .subscribe();
+    // with object parameter
+    throwError(() => error)
+      .pipe(tapResponse({ error: errorCallback }))
+      .subscribe();
 
-        expect(errorCallback).toHaveBeenCalledWith(error);
-    });
+    expect(errorCallback).toHaveBeenCalledWith(error);
+  });
 
-    it('should invoke finalize callback on complete', () => {
-        const finalizeCallback = jest.fn<void, []>();
+  it('should invoke finalize callback on complete', () => {
+    const finalizeCallback = jest.fn<void, []>();
 
-        EMPTY.pipe(tapResponse(noop, noop, finalizeCallback)).subscribe();
+    EMPTY.pipe(tapResponse(noop, noop, finalizeCallback)).subscribe();
 
-        expect(finalizeCallback).toHaveBeenCalledWith();
+    expect(finalizeCallback).toHaveBeenCalledWith();
 
-        finalizeCallback.mockReset();
+    finalizeCallback.mockReset();
 
-        // with object parameter
-        EMPTY.pipe(
-            tapResponse({ next: noop, error: noop, finalize: finalizeCallback })
-        ).subscribe();
+    // with object parameter
+    EMPTY.pipe(
+      tapResponse({ next: noop, error: noop, finalize: finalizeCallback })
+    ).subscribe();
 
-        expect(finalizeCallback).toHaveBeenCalledWith();
-    });
+    expect(finalizeCallback).toHaveBeenCalledWith();
+  });
 
-    it('should invoke finalize callback on error', () => {
-        const finalizeCallback = jest.fn();
-        const error = { message: 'error' };
+  it('should invoke finalize callback on error', () => {
+    const finalizeCallback = jest.fn();
+    const error = { message: 'error' };
 
-        throwError(() => error)
-            .pipe(tapResponse(noop, noop, finalizeCallback))
-            .subscribe();
+    throwError(() => error)
+      .pipe(tapResponse(noop, noop, finalizeCallback))
+      .subscribe();
 
-        expect(finalizeCallback).toHaveBeenCalledWith();
+    expect(finalizeCallback).toHaveBeenCalledWith();
 
-        finalizeCallback.mockReset();
+    finalizeCallback.mockReset();
 
-        // with object parameter
-        throwError(() => error)
-            .pipe(tapResponse({ next: noop, error: noop, finalize: finalizeCallback }))
-            .subscribe();
+    // with object parameter
+    throwError(() => error)
+      .pipe(
+        tapResponse({ next: noop, error: noop, finalize: finalizeCallback })
+      )
+      .subscribe();
 
-        expect(finalizeCallback).toHaveBeenCalledWith();
-    });
+    expect(finalizeCallback).toHaveBeenCalledWith();
+  });
 
-    it('should first invoke next callback on next then finalize callback on complete', () => {
-        const nextCallback = jest.fn<void, [number]>();
-        const finalizeCallback = jest.fn();
+  it('should first invoke next callback on next then finalize callback on complete', () => {
+    const nextCallback = jest.fn<void, [number]>();
+    const finalizeCallback = jest.fn();
 
-        of(1).pipe(tapResponse(nextCallback, noop, finalizeCallback)).subscribe();
+    of(1).pipe(tapResponse(nextCallback, noop, finalizeCallback)).subscribe();
 
-        expect(nextCallback.mock.invocationCallOrder[0]).toBeLessThan(
-            finalizeCallback.mock.invocationCallOrder[0]
-        );
-    });
+    expect(nextCallback.mock.invocationCallOrder[0]).toBeLessThan(
+      finalizeCallback.mock.invocationCallOrder[0]
+    );
+  });
 
-    it('should not unsubscribe from outer observable on inner observable error', () => {
-        const innerCompleteCallback = jest.fn<void, []>();
-        const outerCompleteCallback = jest.fn<void, []>();
+  it('should not unsubscribe from outer observable on inner observable error', () => {
+    const innerCompleteCallback = jest.fn<void, []>();
+    const outerCompleteCallback = jest.fn<void, []>();
 
-        new Observable((subscriber) => subscriber.next(1))
-            .pipe(
-                concatMap(() =>
-                    throwError(() => 'error').pipe(
-                        tapResponse(noop, noop),
-                        finalize(innerCompleteCallback)
-                    )
-                ),
-                finalize(outerCompleteCallback)
-            )
-            .subscribe();
+    new Observable((subscriber) => subscriber.next(1))
+      .pipe(
+        concatMap(() =>
+          throwError(() => 'error').pipe(
+            tapResponse(noop, noop),
+            finalize(innerCompleteCallback)
+          )
+        ),
+        finalize(outerCompleteCallback)
+      )
+      .subscribe();
 
-        expect(innerCompleteCallback).toHaveBeenCalled();
-        expect(outerCompleteCallback).not.toHaveBeenCalled();
-    });
+    expect(innerCompleteCallback).toHaveBeenCalled();
+    expect(outerCompleteCallback).not.toHaveBeenCalled();
+  });
 
-    it('should log an error which occurs in the next callback', () => {
-        console.error = jest.fn();
+  it('should log an error which occurs in the next callback', () => {
+    console.error = jest.fn();
 
-        of(1)
-            .pipe(
-                tapResponse({
-                    next: () => {
-                        throw new Error('next_error');
-                    },
-                    error: noop,
-                })
-            )
-            .subscribe();
+    of(1)
+      .pipe(
+        tapResponse({
+          next: () => {
+            throw new Error('next_error');
+          },
+          error: noop,
+        })
+      )
+      .subscribe();
 
-        expect(console.error).toHaveBeenCalledWith(
-            expect.stringContaining('An error occurred in the `tapResponse` next callback'),
-            expect.any(Error)
-        );
-    });
+    expect(console.error).toHaveBeenCalledWith(
+      expect.stringContaining(
+        'An error occurred in the `tapResponse` next callback'
+      ),
+      expect.any(Error)
+    );
+  });
 
-    it('should log an error which occurs in the error callback', () => {
-        console.error = jest.fn();
+  it('should log an error which occurs in the error callback', () => {
+    console.error = jest.fn();
 
-        throwError(() => 'An error')
-            .pipe(
-                tapResponse({
-                    error: () => {
-                        throw new Error('error_error');
-                    },
-                })
-            )
-            .subscribe();
+    throwError(() => 'An error')
+      .pipe(
+        tapResponse({
+          error: () => {
+            throw new Error('error_error');
+          },
+        })
+      )
+      .subscribe();
 
-        expect(console.error).toHaveBeenCalledWith(
-            expect.stringContaining('An error occurred in the `tapResponse` error callback'),
-            expect.any(Error)
-        );
-    });
+    expect(console.error).toHaveBeenCalledWith(
+      expect.stringContaining(
+        'An error occurred in the `tapResponse` error callback'
+      ),
+      expect.any(Error)
+    );
+  });
 
-    it('should log an error which occurs in the finalize callback', () => {
-        console.error = jest.fn();
+  it('should log an error which occurs in the finalize callback', () => {
+    console.error = jest.fn();
 
-        of(1)
-            .pipe(
-                tapResponse({
-                    error: noop,
-                    finalize: () => {
-                        throw new Error('finalize_error');
-                    },
-                })
-            )
-            .subscribe();
+    of(1)
+      .pipe(
+        tapResponse({
+          error: noop,
+          finalize: () => {
+            throw new Error('finalize_error');
+          },
+        })
+      )
+      .subscribe();
 
-        expect(console.error).toHaveBeenCalledWith(
-            expect.stringContaining('An error occurred in the `tapResponse` finalize callback'),
-            expect.any(Error)
-        );
-    });
+    expect(console.error).toHaveBeenCalledWith(
+      expect.stringContaining(
+        'An error occurred in the `tapResponse` finalize callback'
+      ),
+      expect.any(Error)
+    );
+  });
 });

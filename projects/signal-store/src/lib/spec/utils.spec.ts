@@ -4,7 +4,7 @@ import { store } from './_spec-helpers';
 import { actions$ } from '../store-core';
 
 const action1: Action = {
-    type: 'updateUser',
+  type: 'updateUser',
 };
 
 const action2: Action = {

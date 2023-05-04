@@ -1,8 +1,8 @@
-import {Injectable, Signal} from '@angular/core';
-import {FeatureStore} from "@mini-rx/signal-store";
+import { Injectable, Signal } from '@angular/core';
+import { FeatureStore } from '@mini-rx/signal-store';
 
 interface CounterState {
-    count: number;
+  count: number;
 }
 
 const initialState: CounterState = {

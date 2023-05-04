@@ -1,10 +1,10 @@
-import { counterInitialState, CounterState, store } from './_spec-helpers';
-import { ImmutableStateExtension } from '../extensions/immutable-state.extension';
-import { Action, MetaReducer, Reducer } from '../models';
-import { createFeatureSelector } from '../selector';
-import { createFeatureStore, FeatureStore } from '../feature-store';
-import { addExtension } from '../store-core';
-import { createComponentStore } from '../component-store';
+import {counterInitialState, CounterState, store} from './_spec-helpers';
+import {ImmutableStateExtension} from '../extensions/immutable-state.extension';
+import {Action, MetaReducer, Reducer} from '../models';
+import {createFeatureSelector} from '../selector';
+import {createFeatureStore, FeatureStore} from '../feature-store';
+import {addExtension} from '../store-core';
+import {createComponentStore} from '../component-store';
 
 // Return a fresh (shallow) copy
 function getCounterInitialState() {

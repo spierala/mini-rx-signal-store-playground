@@ -2,7 +2,7 @@ import { Action, Reducer } from '../models';
 import { combineReducers } from '../combine-reducers';
 
 const action1: Action = {
-    type: 'showProductCode',
+  type: 'showProductCode',
 };
 
 const action2: Action = {

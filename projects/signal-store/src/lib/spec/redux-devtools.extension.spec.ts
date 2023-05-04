@@ -1,9 +1,15 @@
 import {
-    ReduxDevtoolsExtension,
-    ReduxDevtoolsOptions,
+  ReduxDevtoolsExtension,
+  ReduxDevtoolsOptions,
 } from '../extensions/redux-devtools.extension';
 import { Action } from '../models';
-import { counterReducer, CounterState, store, userState, UserState } from './_spec-helpers';
+import {
+  counterReducer,
+  CounterState,
+  store,
+  userState,
+  UserState,
+} from './_spec-helpers';
 import { createFeatureStore, FeatureStore } from '../feature-store';
 import { addExtension, appState } from '../store-core';
 
