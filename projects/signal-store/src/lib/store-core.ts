@@ -169,9 +169,9 @@ export function removeFeature(featureKey: string) {
     dispatch(createMiniRxAction(MiniRxActionType.DESTROY, featureKey));
 }
 
-export function effect(effect$: Observable<any> & HasEffectMetadata): void;
-export function effect(effect$: Observable<Action>): void;
-export function effect(effect$: any): void {
+export function rxEffect(effect$: Observable<any> & HasEffectMetadata): void;
+export function rxEffect(effect$: Observable<Action>): void;
+export function rxEffect(effect$: any): void {
     const effectWithErrorHandler$: Observable<Action> = defaultEffectsErrorHandler(effect$);
     effectWithErrorHandler$.subscribe((action) => {
         let shouldDispatch = true;

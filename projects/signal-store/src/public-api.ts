@@ -3,7 +3,6 @@
  */
 
 export {Store} from './lib/store';
-export {actions$} from './lib/store-core';
 export {FeatureStore, createFeatureStore} from './lib/feature-store';
 export {
   ComponentStore,
@@ -11,20 +10,20 @@ export {
   configureComponentStores,
 } from './lib/component-store';
 export
-  *
+{
+  createSelector, createFeatureStateSelector
+}
  from './lib/signal-selector';
 export {
   Action,
   Reducer,
   Actions,
-  ReducerDictionary,
   StoreConfig,
   FeatureConfig,
   ComponentStoreConfig,
   StoreExtension,
-  ExtensionId,
 } from './lib/models';
-export {ofType, hasEffectMetaData} from './lib/utils';
+export {ofType} from './lib/utils';
 export {
   ReduxDevtoolsExtension,
   ReduxDevtoolsOptions,
@@ -34,7 +33,7 @@ export {ImmutableStateExtension} from './lib/extensions/immutable-state.extensio
 export {UndoExtension} from './lib/extensions/undo.extension';
 export {tapResponse} from './lib/tap-response';
 export {mapResponse} from './lib/map-response';
-export {createEffect} from './lib/create-effect';
+export {createRxEffect} from './lib/create-rx-effect';
 export {undo} from './lib/actions';
 
 export { StoreRootModule, StoreModule, StoreFeatureModule } from './lib/ng-modules/store.module';

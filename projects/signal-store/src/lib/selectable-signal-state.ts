@@ -1,5 +1,5 @@
 import { computed, Signal } from '@angular/core';
-import { isSignalSelector, SignalSelector } from '@mini-rx/signal-store';
+import {isSignalSelector, SignalSelector} from "./signal-selector";
 
 type StateSelector<T, R> = (state: T) => R;
 

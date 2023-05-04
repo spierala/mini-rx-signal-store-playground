@@ -53,7 +53,7 @@ export class EffectsModule {
     ) {
         const effects = fromObjectsWithEffectsToEffects(objectsWithEffects);
         effects.forEach((effect: Observable<Action>) => {
-            this.store.effect(effect);
+            this.store.rxEffect(effect);
         });
     }
 

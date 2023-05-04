@@ -41,7 +41,7 @@ type ObservableType<DispatchType, OriginalType> = DispatchType extends false
     : Action;
 type EffectType<OT> = Observable<OT>;
 
-export function createEffect<
+export function createRxEffect<
     C extends EffectConfig,
     DT extends DispatchType<C>,
     OT extends ObservableType<DT, OT>,

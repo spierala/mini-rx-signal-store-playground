@@ -1,4 +1,4 @@
-import {Component, computed, inject, Signal} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {createFeatureStateSelector, createSelector, Store,} from '@mini-rx/signal-store';
 import {action, on, reducer} from 'ts-action';
 import {CounterFeatureStore} from './counter-feature-store';
@@ -8,16 +8,16 @@ const increment = action('increment');
 const decrement = action('decrement');
 
 // Reducer
+// The reducer is registered in the App Module
 export const counterReducer = reducer(
   1,
   on(increment, (state) => state + 1),
   on(decrement, (state) => state - 1)
 );
 
-// Store (Redux) Setup
+// Memoized selectors
 const getCounterState = createFeatureStateSelector<number>('count');
 const getDoubleCount = createSelector(getCounterState, (count) => {
-  console.log('recalc!', count);
   return count * 2
 })
 
@@ -49,9 +49,7 @@ export class AppComponent {
   count = this.store.select(getCounterState);
   doubleCount = this.store.select(getDoubleCount);
 
-  constructor(private store: Store) {
-
-  }
+  constructor(private store: Store) {}
 
   inc() {
     this.store.dispatch(increment());

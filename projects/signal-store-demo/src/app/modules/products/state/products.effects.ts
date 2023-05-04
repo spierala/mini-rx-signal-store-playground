@@ -3,7 +3,7 @@ import { mergeMap, startWith } from 'rxjs/operators';
 import {
   Action,
   Actions,
-  createEffect,
+  createRxEffect,
   mapResponse,
   undo,
 } from '@mini-rx/signal-store';
@@ -33,7 +33,7 @@ export class ProductsEffects {
     private actions$: Actions
   ) {}
 
-  loadProducts$ = createEffect(
+  loadProducts$ = createRxEffect(
     this.actions$.pipe(
       ofType(load),
       mergeMap(() =>
@@ -48,7 +48,7 @@ export class ProductsEffects {
   );
 
   // Effect with optimistic update and undo
-  updateProduct$ = createEffect(
+  updateProduct$ = createRxEffect(
     this.actions$.pipe(
       ofType(updateProduct),
       toPayload(),
@@ -66,7 +66,7 @@ export class ProductsEffects {
     )
   );
 
-  createProduct$ = createEffect(
+  createProduct$ = createRxEffect(
     this.actions$.pipe(
       ofType(createProduct),
       toPayload(),
@@ -81,7 +81,7 @@ export class ProductsEffects {
     )
   );
 
-  deleteProduct$ = createEffect(
+  deleteProduct$ = createRxEffect(
     this.actions$.pipe(
       ofType(deleteProduct),
       toPayload(),

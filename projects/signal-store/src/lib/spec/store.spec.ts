@@ -30,7 +30,7 @@ import {
   store,
 } from './_spec-helpers';
 import { LoggerExtension } from '../extensions/logger.extension';
-import { createEffect } from '../create-effect';
+import { createRxEffect } from '../create-rx-effect';
 import { combineReducers } from '../combine-reducers';
 import * as StoreCore from '../store-core';
 import { actions$ } from '../store-core';
@@ -508,7 +508,7 @@ describe('Store', () => {
     it('should create and execute an effect', () => {
         store.dispatch({ type: 'resetUser' });
 
-        store.effect(
+        store.rxEffect(
             actions$.pipe(
                 ofType('loadUser'),
                 mergeMap(() =>
@@ -526,7 +526,7 @@ describe('Store', () => {
 
         // Let's be crazy and add another effect while the other effect is busy
         cold('-a').subscribe(() => {
-            const effect = createEffect(
+            const effect = createRxEffect(
                 actions$.pipe(
                     ofType('saveUser'),
                     mergeMap(() =>
@@ -540,7 +540,7 @@ describe('Store', () => {
                 )
             );
 
-            store.effect(effect);
+            store.rxEffect(effect);
 
             store.dispatch({ type: 'saveUser' });
         });
@@ -554,7 +554,7 @@ describe('Store', () => {
         const action1 = { type: 'someAction' };
         const action2 = { type: 'someAction2' };
 
-        const effect = createEffect(
+        const effect = createRxEffect(
             actions$.pipe(
                 ofType(action1.type),
                 mergeMap(() => of(action2))
@@ -562,7 +562,7 @@ describe('Store', () => {
             { dispatch: false }
         );
 
-        store.effect(effect);
+        store.rxEffect(effect);
 
         const spy = jest.fn();
         actions$.subscribe(spy);
@@ -577,7 +577,7 @@ describe('Store', () => {
     it('should create and execute an effect and handle side effect error', () => {
         store.dispatch({ type: 'resetUser' });
 
-        store.effect(
+        store.rxEffect(
             actions$.pipe(
                 ofType('someAction'),
                 mergeMap(() =>
@@ -660,7 +660,7 @@ describe('Store', () => {
 
         store.feature('someFeature', someReducer);
 
-        store.effect(
+        store.rxEffect(
             actions$.pipe(
                 ofType('someAction2'),
                 withLatestFrom(store.select((state) => state['someFeature'].value)),
@@ -711,7 +711,7 @@ describe('Store', () => {
 
         store.feature<CounterState>('counter2', counter2Reducer);
 
-        store.effect(
+        store.rxEffect(
             actions$.pipe(
                 ofType('counterEffectStart'),
                 mergeMap(() => of({ type: 'counterEffectSuccess' }))
@@ -765,7 +765,7 @@ describe('Store', () => {
             return of('someValue');
         }
 
-        store.effect(
+        store.rxEffect(
             actions$.pipe(
                 ofType('someAction3'),
                 mergeMap(() => {
