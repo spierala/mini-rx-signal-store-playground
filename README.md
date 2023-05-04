@@ -82,6 +82,8 @@ Run `ng serve signal-store-demo`
 
 You should see this:
 
+<img width="1152" alt="image" src="https://user-images.githubusercontent.com/1272446/236310499-405be096-b687-4ca3-999d-79e0a53f79d6.png">
+
 ## Example
 
 The example code is taken from the app.component.ts in this repo.
