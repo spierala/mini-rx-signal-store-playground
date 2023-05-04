@@ -30,10 +30,15 @@ Proposed package name: @mini-rx/signal-store
 
 #### The main differences of the Signal Store are: 
 - no lazy state initialisation (Signals encourage to have a meaningful initial state)
-- ~~no `select` method / no selectors (with Signals you can "select" state with `computed`)~~ maybe there should be a select method and memoized selectors!? That would make refactors from the original MiniRx to Signal Store much more straightforward
 - state is only available as Signal
+  - via the `select` method
+  - via the `state` property
+  - "memoized selectors" (`createSelector`) use Angular `computed` internally
+  - maybe later a `selectObservable` method could be added for selecting state as Observable
 - all internal usages of RxJS BehaviorSubject have been refactored to Angular Signal
+- RxJS effects APIs use `rxEffect` naming to prevent confusion with Angular Signal `effect` API
 - `update` instead of `setState` (inspired by the Angular Signals API)
+  - consider alternatives to `update`? updateState? to be very explicit? 
 
 ### Based on Angular Signals
 Signals are the new reactive primitive of Angular.
@@ -68,6 +73,14 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The appli
 You should see something like this in the browser:
 
 ![mini-rx-signal-store](https://user-images.githubusercontent.com/1272446/234119525-0d6b5265-4f18-46e2-86a0-92b0e815de90.gif)
+
+### MiniRx Demo with Signal Store
+
+Or run the MiniRx Demo with the MiniRx Signals Store.
+
+Run `ng serve signal-store-demo`
+
+You should see this:
 
 ## Example
 
