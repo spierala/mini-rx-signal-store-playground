@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { APP_BASE_HREF } from '@angular/common';
 import { UserShellComponent } from './modules/user/components/user-shell/user-shell.component';
 import {PixelArtShellComponent} from "./modules/pixel-art/components/pixel-art-shell/pixel-art-shell.component";
+import {CounterShellComponent} from "./modules/counter/counter-shell/counter-shell.component";
 
 const appRoutes: Routes = [
     {
@@ -19,10 +20,10 @@ const appRoutes: Routes = [
         loadChildren: () =>
             import('./modules/products/products.module').then((m) => m.ProductsModule),
     },
-    // {
-    //     path: 'counter',
-    //     component: CounterShellComponent,
-    // },
+    {
+        path: 'counter',
+        component: CounterShellComponent,
+    },
     {
         path: 'cart',
         loadChildren: () => import('./modules/cart/cart.module').then((m) => m.CartModule),

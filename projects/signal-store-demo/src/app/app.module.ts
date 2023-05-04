@@ -19,6 +19,7 @@ import {
 } from "@mini-rx/signal-store";
 import {ProductsStateModule} from "./modules/products/state/products-state.module";
 import {PixelArtModule} from "./modules/pixel-art/pixel-art.module";
+import {CounterModule} from "./modules/counter/counter.module";
 
 @NgModule({
     imports: [
@@ -28,9 +29,7 @@ import {PixelArtModule} from "./modules/pixel-art/pixel-art.module";
         HttpClientInMemoryWebApiModule.forRoot(DbService, { delay: 500, put204: false }),
         AppRoutingModule,
         ToastrModule.forRoot(),
-
-        // TodosModule,
-        // CounterModule,
+        CounterModule,
         UserModule,
 
         // TODO exclude extensions (ImmutableStateExtension, LoggerExtension) from production: https://ngrx.io/guide/store-devtools/recipes/exclude
