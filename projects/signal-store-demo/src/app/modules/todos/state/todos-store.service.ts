@@ -59,10 +59,10 @@ const getTodosNotDone = createSelector(getTodosFiltered, (todos) =>
 })
 export class TodosStore extends FeatureStore<TodosState> {
     // STATE OBSERVABLES
-    todosDone: Signal<Todo[]> = this.selectFromSignal(getTodosDone);
-    todosNotDone: Signal<Todo[]> = this.selectFromSignal(getTodosNotDone);
-    filter: Signal<TodoFilter> = this.selectFromSignal(getFilter);
-    selectedTodo: Signal<Todo | undefined> = this.selectFromSignal(getSelectedTodo);
+    todosDone: Signal<Todo[]> = this.select(getTodosDone);
+    todosNotDone: Signal<Todo[]> = this.select(getTodosNotDone);
+    filter: Signal<TodoFilter> = this.select(getFilter);
+    selectedTodo: Signal<Todo | undefined> = this.select(getSelectedTodo);
 
     constructor(private apiService: TodosApiService) {
         super('todos', initialState);

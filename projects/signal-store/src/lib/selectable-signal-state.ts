@@ -1,17 +1,25 @@
 import {computed, Signal} from '@angular/core';
+import {isSignalSelector, SignalSelector} from "@mini-rx/signal-store";
+
+type StateSelector<T, R> = (state: T) => R
 
 export class SelectableSignalState<StateType extends object> {
   constructor(private _state: Signal<StateType>) {}
 
   select(): Signal<StateType>;
-  select<R>(mapFn: (state: StateType) => R): Signal<R>;
+  select<R>(mapFn: SignalSelector<StateType, R>): Signal<R>;
+  select<R>(mapFn: StateSelector<StateType, R>): Signal<R>;
   select(mapFn?: any): Signal<any> {
-    return computed(() => {
-      return mapFn ? mapFn(this._state()) : this._state();
-    });
-  }
+    if (!mapFn) {
+      return this._state
+    }
 
-  selectFromSignal<R>(mapFn: (stateSignal: Signal<StateType>) => Signal<R>): Signal<R> {
-    return mapFn(this._state);
+    if (isSignalSelector(mapFn)) {
+      return mapFn(this._state)
+    }
+
+    return computed(() => {
+      return mapFn(this._state());
+    });
   }
 }

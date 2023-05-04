@@ -86,15 +86,15 @@ const getDetailTitle = createSelector(
 })
 export class ProductsStore {
     // SIGNALS
-    displayCode: Signal<boolean> = this.store.selectFromSignal(getShowProductCode);
-    selectedProduct: Signal<Product | undefined> = this.store.selectFromSignal(getSelectedProduct);
-    products: Signal<Product[]> = this.store.selectFromSignal(getFilteredProducts);
-    search: Signal<string> = this.store.selectFromSignal(getSearch);
-    cartItems: Signal<CartItem[]> = this.store.selectFromSignal(getCartItemsWithExtraData);
-    cartItemsAmount: Signal<number> = this.store.selectFromSignal(getCartItemsAmount);
-    cartTotalPrice: Signal<number> = this.store.selectFromSignal(getCartTotalPrice);
-    hasCartItems: Signal<boolean> = this.store.selectFromSignal(getHasCartItems);
-    detailTitle: Signal<string> = this.store.selectFromSignal(getDetailTitle);
+    displayCode: Signal<boolean> = this.store.select(getShowProductCode);
+    selectedProduct: Signal<Product | undefined> = this.store.select(getSelectedProduct);
+    products: Signal<Product[]> = this.store.select(getFilteredProducts);
+    search: Signal<string> = this.store.select(getSearch);
+    cartItems: Signal<CartItem[]> = this.store.select(getCartItemsWithExtraData);
+    cartItemsAmount: Signal<number> = this.store.select(getCartItemsAmount);
+    cartTotalPrice: Signal<number> = this.store.select(getCartTotalPrice);
+    hasCartItems: Signal<boolean> = this.store.select(getHasCartItems);
+    detailTitle: Signal<string> = this.store.select(getDetailTitle);
 
     constructor(private store: Store) {
         this.load();

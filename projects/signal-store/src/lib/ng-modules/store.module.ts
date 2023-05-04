@@ -1,6 +1,6 @@
 import { Inject, InjectionToken, Injector, ModuleWithProviders, NgModule } from '@angular/core';
 import {Actions, FeatureConfig, Reducer, StoreConfig} from "../models";
-import {configureStore, Store} from "../store";
+import {Store} from "../store";
 import {actions$} from "../store-core";
 
 export const STORE_CONFIG = new InjectionToken<StoreConfig<any>>('@mini-rx/store-config');
@@ -10,8 +10,8 @@ export const FEATURE_CONFIGS = new InjectionToken<FeatureConfig<any>[]>(
     '@mini-rx/feature-store-config'
 );
 
-export function storeFactory(config: StoreConfig<Record<string, any>>, injector: Injector) {
-    return configureStore(config);
+export function storeFactory(config: StoreConfig<Record<string, any>>) {
+    return new Store(config);
 }
 
 @NgModule()
@@ -44,14 +44,10 @@ export class StoreModule {
             providers: [
                 { provide: STORE_CONFIG, useValue: config },
                 {
-                    provide: Store,
-                    useFactory: storeFactory,
-                    deps: [STORE_CONFIG, Injector],
-                },
-                {
                     provide: Actions,
                     useValue: actions$,
                 },
+                Store
             ],
         };
     }

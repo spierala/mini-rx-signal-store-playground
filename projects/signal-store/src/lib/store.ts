@@ -1,42 +1,22 @@
-import { Action, AppState, FeatureConfig, Reducer, StoreConfig } from './models';
-import { miniRxError } from './utils';
-import { Observable } from 'rxjs';
+import { AppState, StoreConfig } from './models';
 import {
   addFeature,
   configureStore as _configureStore,
   dispatch,
-  effect, selectableAppState,
+  effect,
+  selectableAppState,
 } from './store-core';
-import {Signal} from "@angular/core";
+import { Inject, Injectable } from '@angular/core';
+import { STORE_CONFIG } from './ng-modules/store.module';
 
-export abstract class Store {
-    // Abstract class for Angular Dependency injection
-    // mini-rx-store itself uses `Store` just as a type (return type of `configureStore`)
-    abstract feature<StateType>(
-        featureKey: string,
-        reducer: Reducer<StateType>,
-        config?: FeatureConfig<StateType>
-    ): void;
-    abstract dispatch(action: Action): void;
-    abstract select<R>(mapFn: (state: AppState) => R): Signal<R>;
-    abstract selectFromSignal<R>(mapFn: (stateSignal: Signal<AppState>) => Signal<R>): Signal<R>;
-    abstract effect(effect: Observable<any>): void;
-}
+@Injectable()
+export class Store {
+  feature = addFeature;
+  dispatch = dispatch;
+  effect = effect;
+  select = selectableAppState.select.bind(selectableAppState);
 
-let isStoreConfigured = false;
-
-export function configureStore(config: StoreConfig<AppState>): Store | never {
-    if (!isStoreConfigured) {
-        _configureStore(config);
-        isStoreConfigured = true;
-
-        return {
-            feature: addFeature,
-            select: selectableAppState.select.bind(selectableAppState),
-            selectFromSignal: selectableAppState.selectFromSignal.bind(selectableAppState),
-            dispatch,
-            effect,
-        };
-    }
-    miniRxError('`configureStore` was called multiple times.');
+  constructor(@Inject(STORE_CONFIG) config: StoreConfig<AppState>) {
+    _configureStore(config);
+  }
 }

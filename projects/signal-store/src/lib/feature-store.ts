@@ -64,7 +64,6 @@ export class FeatureStore<StateType extends object>
 
 
     select = this.selectableState.select.bind(this.selectableState);
-    selectFromSignal = this.selectableState.selectFromSignal.bind(this.selectableState);
 
     override destroy() {
         super.destroy();

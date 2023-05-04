@@ -2,7 +2,7 @@
  * Public API Surface of signal-store
  */
 
-export {Store, configureStore} from './lib/store';
+export {Store} from './lib/store';
 export {actions$} from './lib/store-core';
 export {FeatureStore, createFeatureStore} from './lib/feature-store';
 export {
