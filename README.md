@@ -86,48 +86,38 @@ You should see this:
 
 ## Example
 
-The example code is taken from the app.component.ts in this repo.
+The example code is taken from the app.component.ts and app.module.ts in this repo.
 
 You will see:
  - Basic usage of the Redux API
  - Basic usage of a Feature Store
  - Usage of extensions: UndoExtension, Redux DevTools Extension, Immutable Extension
 
+
+App component:
 ```ts
-import {Component, computed, inject} from '@angular/core';
-import {
-  configureStore,
-  getFeatureState, ImmutableStateExtension,
-  ReduxDevtoolsExtension,
-  UndoExtension,
-} from '@mini-rx/signal-store';
-import { action, on, reducer } from 'ts-action';
-import { CounterFeatureStore } from './counter-feature-store';
+import {Component, inject} from '@angular/core';
+import {createFeatureStateSelector, createSelector, Store,} from '@mini-rx/signal-store';
+import {action, on, reducer} from 'ts-action';
+import {CounterFeatureStore} from './counter-feature-store';
 
 // Actions
 const increment = action('increment');
 const decrement = action('decrement');
 
 // Reducer
-const counterReducer = reducer(
+// The reducer is registered in the App Module
+export const counterReducer = reducer(
   1,
   on(increment, (state) => state + 1),
   on(decrement, (state) => state - 1)
 );
 
-// Store (Redux) Setup
-const store = configureStore({
-  reducers: {
-    count: counterReducer,
-  },
-  extensions: [
-    new ReduxDevtoolsExtension({
-      name: 'Signal Store',
-    }),
-    new UndoExtension(),
-    new ImmutableStateExtension()
-  ],
-});
+// Memoized selectors
+const getCounterState = createFeatureStateSelector<number>('count');
+const getDoubleCount = createSelector(getCounterState, (count) => {
+  return count * 2
+})
 
 @Component({
   selector: 'app-root',
@@ -135,6 +125,7 @@ const store = configureStore({
     <h3>Store (Redux)</h3>
     <p>Counter: {{ count() }}</p>
     <p>Counter Double: {{ doubleCount() }}</p>
+
     <button (click)="dec()">Dec</button>
     <button (click)="inc()">Inc</button>
 
@@ -146,25 +137,58 @@ const store = configureStore({
     <button (click)="counterFs.undoLast()">Undo Last Action</button>
     <button (click)="counterFs.mutate()">Mutate</button>
   `,
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
   // Feature Store
   counterFs = inject(CounterFeatureStore);
 
   // Store (Redux)
-  count = getFeatureState<number>(store.state, 'count');
-  doubleCount = computed(() => {
-    return this.count() * 2;
-  });
+  count = this.store.select(getCounterState);
+  doubleCount = this.store.select(getDoubleCount);
+
+  constructor(private store: Store) {}
 
   inc() {
-    store.dispatch(increment());
+    this.store.dispatch(increment());
   }
 
   dec() {
-    store.dispatch(decrement());
+    this.store.dispatch(decrement());
   }
 }
+```
+
+App module:
+```ts
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+
+import {AppComponent, counterReducer} from './app.component';
+import {ImmutableStateExtension, ReduxDevtoolsExtension, StoreModule, UndoExtension} from "@mini-rx/signal-store";
+
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule,
+    StoreModule.forRoot({
+      reducers: {
+        count: counterReducer,
+      },
+      extensions: [
+        new ReduxDevtoolsExtension({
+          name: 'Signal Store',
+        }),
+        new UndoExtension(),
+        new ImmutableStateExtension()
+      ],
+    })
+  ],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
 ```
 
 ### Feature Store

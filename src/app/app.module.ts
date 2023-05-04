@@ -23,7 +23,6 @@ import {ImmutableStateExtension, ReduxDevtoolsExtension, StoreModule, UndoExtens
       ],
     })
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
