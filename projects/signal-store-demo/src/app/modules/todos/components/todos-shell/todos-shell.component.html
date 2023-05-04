@@ -5,7 +5,7 @@
             <button class="btn btn-primary btn-sm" (click)="todosState.initNewTodo()">New</button>
             <app-filter
                 (filterUpdate)="todosState.updateFilter($event)"
-                [filter]="(filter$ | async)!"
+                [filter]="filter()"
             ></app-filter>
         </div>
     </nav>
@@ -29,8 +29,8 @@
                         <span>Todos</span>
                     </div>
                     <app-todo-list
-                        [todos]="(todosNotDone$ | async)!"
-                        [selectedTodo]="(selectedTodo$ | async)!"
+                        [todos]="todosNotDone()"
+                        [selectedTodo]="selectedTodo()"
                         (selectTodo)="todosState.selectTodo($event)"
                     ></app-todo-list>
                 </div>
@@ -41,17 +41,17 @@
                         <span>Todos Done</span>
                     </div>
                     <app-todo-list
-                        [todos]="(todosDone$ | async)!"
-                        [selectedTodo]="(selectedTodo$ | async)!"
+                        [todos]="todosDone()"
+                        [selectedTodo]="selectedTodo()"
                         (selectTodo)="todosState.selectTodo($event)"
                     ></app-todo-list>
                 </div>
             </div>
-            <div class="col" *ngIf="selectedTodo$ | async as selectedTodo">
+            <div class="col" *ngIf="selectedTodo()">
                 <app-todo-detail
-                    [todo]="selectedTodo"
+                    [todo]="selectedTodo()!"
                     (create)="todosState.create($event)"
-                    (update)="todosState.update($event)"
+                    (update)="todosState.updateTodo($event)"
                     (delete)="todosState.delete($event)"
                     (close)="todosState.clearSelectedTodo()"
                 ></app-todo-detail>

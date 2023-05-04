@@ -62,7 +62,9 @@ export class FeatureStore<StateType extends object>
             : miniRxError('UndoExtension is not initialized.');
     }
 
+
     select = this.selectableState.select.bind(this.selectableState);
+    selectFromSignal = this.selectableState.selectFromSignal.bind(this.selectableState);
 
     override destroy() {
         super.destroy();

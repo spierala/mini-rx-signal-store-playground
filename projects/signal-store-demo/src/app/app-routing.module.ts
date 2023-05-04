@@ -10,10 +10,10 @@ const appRoutes: Routes = [
         loadChildren: () =>
             import('./modules/todos-simple/todos-simple.module').then((m) => m.TodosSimpleModule),
     },
-    // {
-    //     path: 'todos',
-    //     loadChildren: () => import('./modules/todos/todos.module').then((m) => m.TodosModule),
-    // },
+    {
+        path: 'todos',
+        loadChildren: () => import('./modules/todos/todos.module').then((m) => m.TodosModule),
+    },
     {
         path: 'products',
         loadChildren: () =>
