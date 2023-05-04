@@ -2,11 +2,10 @@ import { Action, AppState, FeatureConfig, Reducer, StoreConfig } from './models'
 import { miniRxError } from './utils';
 import { Observable } from 'rxjs';
 import {
-    addFeature,
-    appState,
-    configureStore as _configureStore,
-    dispatch,
-    effect,
+  addFeature,
+  configureStore as _configureStore,
+  dispatch,
+  effect, selectableAppState,
 } from './store-core';
 import {Signal} from "@angular/core";
 
@@ -33,8 +32,8 @@ export function configureStore(config: StoreConfig<AppState>): Store | never {
 
         return {
             feature: addFeature,
-            select: appState.select.bind(appState),
-            selectFromSignal: appState.selectFromSignal.bind(appState),
+            select: selectableAppState.select.bind(selectableAppState),
+            selectFromSignal: selectableAppState.selectFromSignal.bind(selectableAppState),
             dispatch,
             effect,
         };

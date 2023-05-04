@@ -20,7 +20,8 @@ import {
     undo,
 } from './actions';
 import { ActionsOnQueue } from './actions-on-queue';
-import {SignalState} from "./signal-state";
+import {SelectableSignalState} from "./selectable-signal-state";
+import {signal} from "@angular/core";
 
 let componentStoreConfig: ComponentStoreConfig | undefined = undefined;
 
@@ -46,8 +47,9 @@ export class ComponentStore<StateType extends object>
     implements ComponentStoreLike<StateType>
 {
     private actionsOnQueue = new ActionsOnQueue();
-    private _state = new SignalState(this.initialState);
-    state = this._state.select();
+    private _state = signal(this.initialState);
+    private _selectableState = new SelectableSignalState(this._state)
+    state = this._selectableState.select();
     private readonly combinedMetaReducer: MetaReducer<StateType>;
     private readonly reducer: Reducer<StateType>;
     private hasUndoExtension = false;
@@ -93,7 +95,7 @@ export class ComponentStore<StateType extends object>
         this._sub.add(
             this.actionsOnQueue.actions$.subscribe((action) => {
                 const newState: StateType = this.reducer(
-                    this._state.getValue(),
+                    this._state(),
                     action
                 );
                 this._state.set(newState);
@@ -124,7 +126,7 @@ export class ComponentStore<StateType extends object>
             : miniRxError(`${this.constructor.name} has no UndoExtension yet.`);
     }
 
-    select = this._state.select.bind(this._state);
+    select = this._selectableState.select.bind(this._selectableState);
 
     override destroy() {
         // Dispatch an action really just for logging via LoggerExtension

@@ -1,9 +1,8 @@
-import { Injectable } from '@angular/core';
+import {Injectable, Signal} from '@angular/core';
 import { Todo } from '../../todos-shared/models/todo';
 import { TodoFilter } from '../../todos-shared/models/todo-filter';
-import { Observable } from 'rxjs';
 import { TodosApiService } from '../../todos-shared/services/todos-api.service';
-import { FeatureStore } from 'mini-rx-store';
+import { FeatureStore } from '@mini-rx/signal-store';
 
 // STATE INTERFACE
 interface TodosState {
@@ -29,17 +28,17 @@ const initialState: TodosState = {
     providedIn: 'root',
 })
 export class TodosSimpleStore extends FeatureStore<TodosState> {
-    // STATE OBSERVABLES
-    todosDone$: Observable<Todo[]> = this.select((state) => {
+    // STATE SIGNALS
+    todosDone: Signal<Todo[]> = this.select((state) => {
         const filteredTodos = filterTodos(state.todos, state.filter);
         return filteredTodos.filter((todo) => todo.isDone);
     });
-    todosNotDone$: Observable<Todo[]> = this.select((state) => {
+    todosNotDone: Signal<Todo[]> = this.select((state) => {
         const filteredTodos = filterTodos(state.todos, state.filter);
         return filteredTodos.filter((todo) => !todo.isDone);
     });
-    filter$: Observable<TodoFilter> = this.select((state) => state.filter);
-    selectedTodo$: Observable<Todo | undefined> = this.select((state) => state.selectedTodo);
+    filter: Signal<TodoFilter> = this.select((state) => state.filter);
+    selectedTodo: Signal<Todo | undefined> = this.select((state) => state.selectedTodo);
 
     constructor(private apiService: TodosApiService) {
         super('todos-simple', initialState);
@@ -49,22 +48,22 @@ export class TodosSimpleStore extends FeatureStore<TodosState> {
 
     // UPDATE STATE
     selectTodo(todo: Todo) {
-        this.setState({ selectedTodo: todo });
+        this.update({ selectedTodo: todo });
     }
 
     initNewTodo() {
         const newTodo = new Todo();
-        this.setState({ selectedTodo: newTodo });
+        this.update({ selectedTodo: newTodo });
     }
 
     clearSelectedTodo() {
-        this.setState({
+        this.update({
             selectedTodo: undefined,
         });
     }
 
     updateFilter(filter: TodoFilter) {
-        this.setState((state) => ({
+        this.update((state) => ({
             filter: {
                 ...state.filter,
                 ...filter,
@@ -74,21 +73,21 @@ export class TodosSimpleStore extends FeatureStore<TodosState> {
 
     // API CALLS
     load(): void {
-        this.apiService.getTodos().subscribe((todos) => this.setState({ todos }));
+        this.apiService.getTodos().subscribe((todos) => this.update({ todos }));
     }
 
     create(todo: Todo): void {
         this.apiService.createTodo(todo).subscribe((createdTodo) =>
-            this.setState((state) => ({
+            this.update((state) => ({
                 todos: [...state.todos, createdTodo],
                 selectedTodo: createdTodo,
             }))
         );
     }
 
-    update(todo: Todo): void {
+    updateTodo(todo: Todo): void {
         this.apiService.updateTodo(todo).subscribe((updatedTodo) =>
-            this.setState((state) => ({
+            this.update((state) => ({
                 todos: updateTodoInList(state.todos, updatedTodo),
             }))
         );
@@ -96,7 +95,7 @@ export class TodosSimpleStore extends FeatureStore<TodosState> {
 
     delete(todo: Todo): void {
         this.apiService.deleteTodo(todo).subscribe(() =>
-            this.setState((state) => ({
+            this.update((state) => ({
                 selectedTodo: undefined,
                 todos: state.todos.filter((item) => item.id !== todo.id),
             }))

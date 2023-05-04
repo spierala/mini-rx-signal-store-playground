@@ -24,7 +24,7 @@ import { combineReducers } from './combine-reducers';
 import { createMiniRxAction, MiniRxActionType } from './actions';
 import { ActionsOnQueue } from './actions-on-queue';
 import {computed, Signal, signal, WritableSignal} from '@angular/core';
-import {SignalState} from "./signal-state";
+import {SelectableSignalState} from "./selectable-signal-state";
 
 export let hasUndoExtension = false;
 let isStoreInitialized = false;
@@ -86,7 +86,8 @@ const actionsOnQueue = new ActionsOnQueue();
 export const actions$: Actions = actionsOnQueue.actions$;
 
 // APP STATE
-export const appState = new SignalState<AppState>({});
+const appState = signal({});
+export const selectableAppState: SelectableSignalState<AppState> = new SelectableSignalState(appState);
 
 // Wire up the Redux Store: Init reducer state, subscribe to the actions and reducer Observable
 // Called by `configureStore` and `addReducer`
@@ -103,7 +104,7 @@ function initStore() {
     // Listen to the Actions stream and update state accordingly
     actionsOnQueue.actions$.subscribe((action) => {
         const newState: AppState = reducer()(
-            appState.getValue(),
+            appState(),
             action
         );
         appState.set(newState);
@@ -200,6 +201,10 @@ export function addExtension(extension: StoreExtension) {
 
 export function dispatch(action: Action) {
     actionsOnQueue.dispatch(action);
+}
+
+export function updateAppState(state: AppState) {
+  appState.set(state)
 }
 
 function createReducerWithInitialState<StateType>(

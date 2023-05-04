@@ -1,17 +1,7 @@
-import { computed, Signal, signal } from '@angular/core';
+import {computed, Signal} from '@angular/core';
 
-export class SignalState<StateType extends object> {
-  private _state = signal(this.initialState);
-
-  constructor(private initialState: StateType) {}
-
-  set(v: StateType) {
-    this._state.set(v);
-  }
-
-  getValue(): StateType {
-    return this._state()
-  }
+export class SelectableSignalState<StateType extends object> {
+  constructor(private _state: Signal<StateType>) {}
 
   select(): Signal<StateType>;
   select<R>(mapFn: (state: StateType) => R): Signal<R>;

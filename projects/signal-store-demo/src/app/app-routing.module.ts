@@ -5,11 +5,11 @@ import { UserShellComponent } from './modules/user/components/user-shell/user-sh
 import {PixelArtShellComponent} from "./modules/pixel-art/components/pixel-art-shell/pixel-art-shell.component";
 
 const appRoutes: Routes = [
-    // {
-    //     path: 'todos-simple',
-    //     loadChildren: () =>
-    //         import('./modules/todos-simple/todos-simple.module').then((m) => m.TodosSimpleModule),
-    // },
+    {
+        path: 'todos-simple',
+        loadChildren: () =>
+            import('./modules/todos-simple/todos-simple.module').then((m) => m.TodosSimpleModule),
+    },
     // {
     //     path: 'todos',
     //     loadChildren: () => import('./modules/todos/todos.module').then((m) => m.TodosModule),

@@ -9,8 +9,9 @@ import {
     undo,
 } from './actions';
 import { BaseStore } from './base-store';
-import { addFeature, appState, dispatch, hasUndoExtension, removeFeature } from './store-core';
+import {addFeature, dispatch, hasUndoExtension, removeFeature, selectableAppState} from './store-core';
 import {Signal} from "@angular/core";
+import {SelectableSignalState} from "./selectable-signal-state";
 
 export class FeatureStore<StateType extends object>
     extends BaseStore<StateType>
@@ -21,9 +22,10 @@ export class FeatureStore<StateType extends object>
         return this._featureKey;
     }
 
-  state: Signal<StateType> = appState.select(state => state[this.featureKey])
+    state: Signal<StateType> = selectableAppState.select(state => state[this.featureKey]);
+    private selectableState = new SelectableSignalState(this.state)
 
-  private readonly featureId: string;
+    private readonly featureId: string;
 
     constructor(
         featureKey: string,
@@ -60,7 +62,7 @@ export class FeatureStore<StateType extends object>
             : miniRxError('UndoExtension is not initialized.');
     }
 
-    select = appState.select.bind(appState);
+    select = this.selectableState.select.bind(this.selectableState);
 
     override destroy() {
         super.destroy();
