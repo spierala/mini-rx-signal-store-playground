@@ -23,10 +23,10 @@ const appRoutes: Routes = [
     //     path: 'counter',
     //     component: CounterShellComponent,
     // },
-    // {
-    //     path: 'cart',
-    //     loadChildren: () => import('./modules/cart/cart.module').then((m) => m.CartModule),
-    // },
+    {
+        path: 'cart',
+        loadChildren: () => import('./modules/cart/cart.module').then((m) => m.CartModule),
+    },
     {
         path: 'art',
         component: PixelArtShellComponent,
