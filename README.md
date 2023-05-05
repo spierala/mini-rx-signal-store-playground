@@ -144,10 +144,9 @@ export class AppComponent {
   counterFs = inject(CounterFeatureStore);
 
   // Store (Redux)
+  private store = inject(Store);
   count = this.store.select(getCounterState);
   doubleCount = this.store.select(getDoubleCount);
-
-  constructor(private store: Store) {}
 
   inc() {
     this.store.dispatch(increment());
