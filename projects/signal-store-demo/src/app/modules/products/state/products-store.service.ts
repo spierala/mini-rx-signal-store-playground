@@ -16,15 +16,18 @@ import {
 } from './products.actions';
 import { Product } from '../models/product';
 import { CartItem } from '../models/cart-item';
-import { featureKeyUser, UserState } from '../../user/state/user-store.service';
 
 // MEMOIZED SELECTORS
 const getProductFeatureState = createFeatureStateSelector<fromProducts.ProductState>('products');
 const getShowProductCode = createSelector(getProductFeatureState, (state) => state.showProductCode);
-const getSelectedProduct = createSelector(getProductFeatureState, (state) => state.selectedProduct);
+const getSelectedProduct = createSelector(getProductFeatureState, (state) => {
+  console.log('calc selected product')
+  return state.selectedProduct
+});
 const getProducts = createSelector(getProductFeatureState, (state) => state.products);
 const getSearch = createSelector(getProductFeatureState, (state) => state.search);
 const getFilteredProducts = createSelector(getProducts, getSearch, (products, search) => {
+  console.log('calc filtered products')
     return products.filter(
         (item) => item.productName.toUpperCase().indexOf(search.toUpperCase()) > -1
     );
@@ -34,6 +37,8 @@ const getCartItemsWithExtraData = createSelector(
     getProducts,
     getCartItems,
     (products, cartItems) => {
+        console.log('calc getCartItemsWithExtraData');
+
         return cartItems.reduce<CartItem[]>((accumulated, cartItem) => {
             const foundProduct: Product | undefined = products.find(
                 (product) => product.id === cartItem.productId
@@ -68,18 +73,18 @@ const getCartTotalPrice = createSelector(getCartItemsWithExtraData, (cartItemsWi
     }, 0)
 );
 
-const getUserFeatureState = createFeatureStateSelector<UserState>(featureKeyUser);
-const getPermissions = createSelector(getUserFeatureState, (state) => state.permissions);
-const getDetailTitle = createSelector(
-    getPermissions,
-    getSelectedProduct,
-    (permissions, product) => {
-        if (permissions.canUpdateProducts) {
-            return product && product.id ? 'Edit Product' : 'Create Product';
-        }
-        return 'View Product';
-    }
-);
+// const getUserFeatureState = createFeatureStateSelector<UserState>(featureKeyUser);
+// const getPermissions = createSelector(getUserFeatureState, (state) => state.permissions);
+// const getDetailTitle = createSelector(
+//     getPermissions,
+//     getSelectedProduct,
+//     (permissions, product) => {
+//         if (permissions.canUpdateProducts) {
+//             return product && product.id ? 'Edit Product' : 'Create Product';
+//         }
+//         return 'View Product';
+//     }
+// );
 
 @Injectable({
     providedIn: 'root',
@@ -94,7 +99,7 @@ export class ProductsStore {
     cartItemsAmount: Signal<number> = this.store.selectFromSignal(getCartItemsAmount);
     cartTotalPrice: Signal<number> = this.store.selectFromSignal(getCartTotalPrice);
     hasCartItems: Signal<boolean> = this.store.selectFromSignal(getHasCartItems);
-    detailTitle: Signal<string> = this.store.selectFromSignal(getDetailTitle);
+    // detailTitle: Signal<string> = this.store.selectFromSignal(getDetailTitle);
 
     constructor(private store: Store) {
         this.load();

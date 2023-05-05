@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { APP_BASE_HREF } from '@angular/common';
-import { UserShellComponent } from './modules/user/components/user-shell/user-shell.component';
 import {PixelArtShellComponent} from "./modules/pixel-art/components/pixel-art-shell/pixel-art-shell.component";
 
 const appRoutes: Routes = [
@@ -31,10 +30,10 @@ const appRoutes: Routes = [
         path: 'art',
         component: PixelArtShellComponent,
     },
-    {
-        path: 'user',
-        component: UserShellComponent,
-    },
+    // {
+    //     path: 'user',
+    //     component: UserShellComponent,
+    // },
     { path: '', redirectTo: 'todos-simple', pathMatch: 'full' },
 ];
 

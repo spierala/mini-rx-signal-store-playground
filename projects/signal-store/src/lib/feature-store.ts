@@ -9,8 +9,8 @@ import {
     undo,
 } from './actions';
 import { BaseStore } from './base-store';
-import { addFeature, appState, dispatch, hasUndoExtension, removeFeature } from './store-core';
-import {Signal} from "@angular/core";
+import {addFeature, appState, dispatch, hasUndoExtension, removeFeature, select} from './store-core';
+import {signal, Signal} from "@angular/core";
 
 export class FeatureStore<StateType extends object>
     extends BaseStore<StateType>
@@ -21,7 +21,7 @@ export class FeatureStore<StateType extends object>
         return this._featureKey;
     }
 
-  state: Signal<StateType> = appState.select(state => state[this.featureKey])
+  state: Signal<StateType> = signal<any>('bla')
 
   private readonly featureId: string;
 
@@ -60,7 +60,7 @@ export class FeatureStore<StateType extends object>
             : miniRxError('UndoExtension is not initialized.');
     }
 
-    select = appState.select.bind(appState);
+    select = select;
 
     override destroy() {
         super.destroy();

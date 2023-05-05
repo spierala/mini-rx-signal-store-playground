@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Product } from '../../models/product';
 import { NgForm } from '@angular/forms';
-import { Permissions } from '../../../user/state/user-store.service';
 
 @Component({
     selector: 'app-product-detail',
@@ -15,9 +14,6 @@ export class ProductDetailComponent {
 
     @Input()
     detailTitle!: string;
-
-    @Input()
-    permissions!: Permissions;
 
     @Output()
     create = new EventEmitter<Product>();

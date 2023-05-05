@@ -25,7 +25,7 @@
 // SOFTWARE.
 
 import {computed, Signal} from "@angular/core";
-import {AppState} from "./models";
+export type AppState = Record<string, any>;
 
 export type Selector<T, V> = (state: Signal<T>) => Signal<V>;
 
@@ -106,7 +106,7 @@ export function createSelector(...args: any[]): Selector<any, any> {
     return computed(() => {
       const selectorSignalResults: any[] = selectorSignals.map(aSignal => aSignal());
       return projector(...selectorSignalResults)
-    })
+    }, {equal: signalEquality})
   };
 }
 
@@ -120,4 +120,8 @@ export function createFeatureStateSelector(featureKey?: any): Selector<any, any>
     );
   }
   return (state) => state; // Do not memoize: when used with FeatureStore there is a new state object created for every `setState`
+}
+
+function signalEquality(a: any, b: any) {
+  return a === b
 }

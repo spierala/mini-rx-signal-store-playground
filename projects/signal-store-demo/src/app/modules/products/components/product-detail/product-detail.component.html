@@ -7,7 +7,7 @@
     </div>
     <div class="card-body">
         <form #form="ngForm">
-            <fieldset [disabled]="!permissions.canUpdateProducts">
+            <fieldset>
                 <div class="form-group">
                     <label for="productName">Name</label>
                     <input
@@ -69,7 +69,7 @@
                     ></textarea>
                 </div>
             </fieldset>
-            <ng-container *ngIf="permissions.canUpdateProducts">
+            <ng-container>
                 <button
                     class="btn btn-primary mr-2"
                     (click)="submit(form)"

@@ -8,12 +8,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { ToastrModule } from 'ngx-toastr';
-import {UserModule} from "./modules/user/user.module";
 import {
   ComponentStoreModule,
   ImmutableStateExtension,
   LoggerExtension,
-  ReduxDevtoolsExtension,
   StoreModule,
   UndoExtension
 } from "@mini-rx/signal-store";
@@ -31,7 +29,7 @@ import {PixelArtModule} from "./modules/pixel-art/pixel-art.module";
 
         // TodosModule,
         // CounterModule,
-        UserModule,
+        // UserModule,
 
         // TODO exclude extensions (ImmutableStateExtension, LoggerExtension) from production: https://ngrx.io/guide/store-devtools/recipes/exclude
         StoreModule.forRoot({
@@ -39,13 +37,13 @@ import {PixelArtModule} from "./modules/pixel-art/pixel-art.module";
                 new ImmutableStateExtension(),
                 new UndoExtension(),
                 new LoggerExtension(),
-                new ReduxDevtoolsExtension({
-                    name: 'MiniRx Angular Demo',
-                    maxAge: 25,
-                    latency: 250,
-                    trace: true,
-                    traceLimit: 25,
-                }),
+                // new ReduxDevtoolsExtension({
+                //     name: 'MiniRx Angular Demo',
+                //     maxAge: 25,
+                //     latency: 250,
+                //     trace: true,
+                //     traceLimit: 25,
+                // }),
             ],
         }),
         ComponentStoreModule.forRoot({
