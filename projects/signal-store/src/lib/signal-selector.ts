@@ -113,7 +113,7 @@ export function createSelector(...args: any[]): SignalSelector<any, any> {
     return computed(() => {
       const selectorSignalResults: any[] = selectorSignals.map(aSignal => aSignal());
       return projector(...selectorSignalResults)
-    })
+    }, {equal: signalEquality})
   };
 
   return addSignalSelectorKey(newSelector);
@@ -147,4 +147,8 @@ export function isSignalSelector(
 ): v is SignalSelector<any, any> {
   // eslint-disable-next-line no-prototype-builtins
   return v.hasOwnProperty(SIGNAL_SELECTOR_KEY);
+}
+
+function signalEquality(a: any, b: any) {
+  return a === b
 }
