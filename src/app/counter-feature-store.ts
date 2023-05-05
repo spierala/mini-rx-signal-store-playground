@@ -1,7 +1,5 @@
 import {Action, FeatureStore} from '@mini-rx/signal-store';
-import {computed, Injectable, signal} from "@angular/core";
-import {pipe} from "rxjs";
-import {tap} from "rxjs/operators";
+import {computed, Injectable} from "@angular/core";
 
 // State interface
 interface CounterState {
@@ -10,7 +8,7 @@ interface CounterState {
 
 // Initial state
 const counterInitialState: CounterState = {
-  count: 11
+  count: 1
 };
 
 // Extend FeatureStore and pass the State interface
@@ -19,8 +17,6 @@ export class CounterFeatureStore extends FeatureStore<CounterState> {
   // State
   count = computed(() => this.state().count);
   doubleCount = computed(() => this.count() * 2);
-
-  updateTrigger = signal<Partial<CounterState>>({count: 1000});
 
   lastAction: Action | undefined;
 
@@ -31,11 +27,11 @@ export class CounterFeatureStore extends FeatureStore<CounterState> {
 
   // Update state with `update`
   inc() {
-    this.lastAction = this.update(state => ({ count: state.count + 1 }));
+    this.lastAction = this.update(state => ({ count: state.count + 1 }), 'inc');
   }
 
   dec() {
-    this.lastAction = this.update(state => ({ count: state.count - 1 }));
+    this.lastAction = this.update(state => ({ count: state.count - 1 }), 'dec');
   }
 
   undoLast() {
