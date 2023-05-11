@@ -6,19 +6,28 @@ import {CounterFeatureStore} from './counter-feature-store';
 // Actions
 const increment = action('increment');
 const decrement = action('decrement');
+const same = action('same');
 
 // Reducer
 // The reducer is registered in the App Module
 export const counterReducer = reducer(
-  1,
+  0,
   on(increment, (state) => state + 1),
-  on(decrement, (state) => state - 1)
+  on(decrement, (state) => state - 1),
+  on(same, (state) => state),
 );
+
+function isOdd(num: number) { return num % 2;}
 
 // Memoized selectors
 const getCounterState = createFeatureStateSelector<number>('count');
 const getDoubleCount = createSelector(getCounterState, (count) => {
-  return count * 2
+  console.log('Run double count');
+  const calc = count * 2;
+  if (Math.random() > 0.7) {
+    throw new Error();
+  }
+  return calc;
 })
 
 @Component({
@@ -30,6 +39,7 @@ const getDoubleCount = createSelector(getCounterState, (count) => {
 
     <button (click)="dec()">Dec</button>
     <button (click)="inc()">Inc</button>
+    <button (click)="same()">Same</button>
 
     <h3>Feature Store</h3>
     <p>CounterFs: {{ counterFs.count() }}</p>
@@ -56,5 +66,9 @@ export class AppComponent {
 
   dec() {
     this.store.dispatch(decrement());
+  }
+
+  same() {
+    this.store.dispatch(same());
   }
 }
